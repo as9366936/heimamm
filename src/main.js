@@ -15,6 +15,11 @@ import "./style/bass.css";
 
 Vue.config.productionTip = false
 
+// 测试环境变量
+window.console.log(process.env.VUE_APP_BASEURL);
+// 点出所有的
+// window.console.log(process.env);
+
 new Vue({
   // 挂载到Vue实例上 router
   router,
