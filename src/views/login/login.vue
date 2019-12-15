@@ -33,7 +33,7 @@
               <el-input placeholder="请输入验证码" prefix-icon="el-icon-key" v-model="form.captcha"></el-input>
             </el-col>
             <el-col :span="6">
-              <img class="captcha" src="../../assets/captcha.jpg" alt />
+              <img class="captcha" @click="changeCaptcha" :src="captchaUrl" alt />
             </el-col>
           </el-row>
         </el-form-item>
@@ -91,7 +91,7 @@ export default {
         phone: "",
         password: "",
         captcha: "",
-        checked: false,
+        checked: false
       },
       rules: {
         // 手机号
@@ -111,7 +111,10 @@ export default {
           { required: true, message: "验证码不能为空", trigger: "blur" },
           { min: 4, max: 4, message: "验证码长度为4", trigger: "change" }
         ]
-      }
+      },
+      // 验证码地址
+      captchaUrl: process.env.VUE_APP_BASEURL + "/captcha?type=login"
+
     };
   },
   methods: {
@@ -138,6 +141,14 @@ export default {
         });
       }
     },
+    /**
+    * @description: 重新获取验证码
+    * @param {type} 
+    * @return: 
+    */
+    changeCaptcha(){
+      this.captchaUrl = process.env.VUE_APP_BASEURL + "/captcha?type=login" + Date.now();
+    }
   }
 };
 </script>
