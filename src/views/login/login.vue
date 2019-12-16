@@ -63,7 +63,7 @@
           <!-- 头像上传 -->
           <el-upload
             class="avatar-uploader"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="uploadUrl"
             name="image"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
@@ -241,7 +241,9 @@ export default {
       // 上传地址
       imageUrl: "",
       // 倒计时
-      time: 0
+      time: 0,
+      // 头像上传地址
+      uploadUrl: process.env.VUE_APP_BASEURL + "/uploads",
     };
   },
   methods: {
@@ -310,6 +312,13 @@ export default {
      * @return:
      */
     handleAvatarSuccess(res, file) {
+      // window.console.log(res);
+      // window.console.log(file);
+      // 获取服务器返回的图片地址  注意: 不包含基地址
+      // window.console.log(res.data.file_path);
+      // 保存头像地址
+      this.regForm.avator = res.data.file_path;
+      // 生成本地的临时地址
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     /**
