@@ -58,12 +58,13 @@
     <!-- 注册的对话框 -->
     <el-dialog title="用户注册" :visible.sync="dialogFormVisible">
       <!-- 注册 表单 -->
-      <el-form :rules="rules" ref="reg_form" :model="form">
+      <el-form :rules="regRules" ref="regForm" :model="regForm">
         <el-form-item label="头像" :label-width="formLabelWidth">
           <!-- 头像上传 -->
           <el-upload
             class="avatar-uploader"
             action="https://jsonplaceholder.typicode.com/posts/"
+            name="image"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
@@ -72,32 +73,32 @@
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item label="昵称" :label-width="formLabelWidth" prop="reg_name">
-          <el-input v-model="form.reg_name" autocomplete="off"></el-input>
+        <el-form-item label="昵称" :label-width="formLabelWidth" prop="username">
+          <el-input v-model="regForm.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" :label-width="formLabelWidth" prop="reg_email">
-          <el-input v-model="form.reg_email" autocomplete="off"></el-input>
+        <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
+          <el-input v-model="regForm.email" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="手机" :label-width="formLabelWidth" prop="reg_phone">
-          <el-input v-model="form.reg_phone" autocomplete="off"></el-input>
+        <el-form-item label="手机" :label-width="formLabelWidth" prop="phone">
+          <el-input v-model="regForm.phone" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" :label-width="formLabelWidth" prop="reg_password">
-          <el-input show-password v-model="form.reg_password" autocomplete="off"></el-input>
+        <el-form-item label="密码" :label-width="formLabelWidth" prop="password">
+          <el-input show-password v-model="regForm.password" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="图形码" :label-width="formLabelWidth" prop="reg_pic">
+        <el-form-item label="图形码" :label-width="formLabelWidth" prop="code">
           <el-row>
             <el-col :span="16">
-              <el-input v-model="form.reg_pic" autocomplete="off"></el-input>
+              <el-input v-model="regForm.code" autocomplete="off"></el-input>
             </el-col>
             <el-col :span="7" :offset="1">
               <img @click="reg_changeCaptcha" class="register-captcha" :src="reg_captchaUrl" alt />
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="验证码" :label-width="formLabelWidth" prop="reg_captcha">
+        <el-form-item label="验证码" :label-width="formLabelWidth" prop="rcode">
           <el-row>
             <el-col :span="16">
-              <el-input v-model="form.reg_captcha" autocomplete="off"></el-input>
+              <el-input v-model="regForm.rcode" autocomplete="off"></el-input>
             </el-col>
             <el-col :span="7" :offset="1">
               <el-button>获取用户验证码</el-button>
@@ -173,14 +174,21 @@ export default {
         phone: "",
         password: "",
         captcha: "",
-        checked: false,
-        // 注册表
-        reg_name: "",
-        reg_email: "",
-        reg_phone: "",
-        reg_password: "",
-        reg_pic: "",
-        reg_captcha: ""
+        // 是否勾选
+        checked: false
+      },
+      // 注册表单
+      regForm: {
+        username: "",
+        email: "",
+        phone: "",
+        password: "",
+        // 头像
+        avatar: "",
+        // 图片验证码
+        code: "",
+        // 短信验证
+        rcode: ""
       },
       rules: {
         // 手机号
@@ -194,35 +202,38 @@ export default {
         captcha: [
           { required: true, message: "验证码不能为空", trigger: "blur" },
           { min: 4, max: 4, message: "验证码长度为4", trigger: "change" }
-        ],
+        ]
+      },
+      regRules: {
         // 注册昵称
-        reg_name: [
+        username: [
           { required: true, message: "昵称不能为空", trigger: "blur" },
           { min: 1, max: 6, message: "昵称长度为1 到 6位", trigger: "blur" }
         ],
         // 注册邮箱
-        reg_email: [{ required: true, validator: checkEmail, trigger: "blur" }],
+        email: [{ required: true, validator: checkEmail, trigger: "blur" }],
         // 注册手机号
-        reg_phone: [{ required: true, validator: checkPhone, trigger: "blur" }],
+        phone: [{ required: true, validator: checkPhone, trigger: "blur" }],
         // 注册密码
-        reg_password: [
-          { required: true, message: "密码不能为空", trigger: "change" },
+        password: [
+          { required: true, message: "密码不能为空", trigger: "blur" },
           { min: 6, max: 18, message: "密码长度为6 到 18", trigger: "change" }
         ],
         // 注册图形码
-        reg_pic: [
+        code: [
           // { required: true, message: "图形码不能为空", trigger: "blur" },
           { min: 4, max: 4, message: "图形码长度为4", trigger: "change" }
         ],
         // 注册验证码
-        reg_captcha: [
+        rcode: [
           // { required: true, message: "验证码不能为空", trigger: "blur" },
           { min: 4, max: 4, message: "验证码长度为4", trigger: "change" }
         ]
       },
       // 验证码地址
       captchaUrl: process.env.VUE_APP_BASEURL + "/captcha?type=login",
-      reg_captchaUrl: process.env.VUE_APP_BASEURL + "/captcha?type=login",
+      // 注册页面图形码地址
+      reg_captchaUrl: process.env.VUE_APP_BASEURL + "/captcha?type=sendsms",
       // 是否显示对话框
       dialogFormVisible: false,
       // 宽度
@@ -266,7 +277,7 @@ export default {
     },
     // 注册表单验证方法
     submitRegister() {
-      this.$refs.reg_form.validate(valid => {
+      this.$refs.regForm.validate(valid => {
         if (valid) {
           // 验证成功
           this.$message.success("注册成功!");
@@ -287,7 +298,7 @@ export default {
     // 注册列表重新获取验证码
     reg_changeCaptcha() {
       this.reg_captchaUrl =
-        process.env.VUE_APP_BASEURL + "/captcha?type=login&" + Date.now(); // 时间戳
+        process.env.VUE_APP_BASEURL + "/captcha?type=sendsms&" + Date.now(); // 时间戳
       // 这里login后面注意加上&!!!
     },
     /**
