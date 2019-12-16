@@ -101,7 +101,7 @@
               <el-input v-model="regForm.rcode" autocomplete="off"></el-input>
             </el-col>
             <el-col :span="7" :offset="1">
-              <el-button>获取用户验证码</el-button>
+              <el-button @click="getMessageCode">获取用户验证码</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -144,7 +144,6 @@ export default {
         }
       }
     };
-
     /**
      * @description:  自定义校验规则函数,检验邮箱是否规范
      * @param {type}  rule 规则
@@ -204,11 +203,12 @@ export default {
           { min: 4, max: 4, message: "验证码长度为4", trigger: "change" }
         ]
       },
+      // 注册表单的规则
       regRules: {
         // 注册昵称
         username: [
           { required: true, message: "昵称不能为空", trigger: "blur" },
-          { min: 1, max: 6, message: "昵称长度为1 到 6位", trigger: "blur" }
+          { min: 1, max: 6, message: "昵称长度为2 到 8位", trigger: "blur" }
         ],
         // 注册邮箱
         email: [{ required: true, validator: checkEmail, trigger: "blur" }],
@@ -219,12 +219,12 @@ export default {
           { required: true, message: "密码不能为空", trigger: "blur" },
           { min: 6, max: 18, message: "密码长度为6 到 18", trigger: "change" }
         ],
-        // 注册图形码
+        // 图形码
         code: [
           // { required: true, message: "图形码不能为空", trigger: "blur" },
           { min: 4, max: 4, message: "图形码长度为4", trigger: "change" }
         ],
-        // 注册验证码
+        // 验证码
         rcode: [
           // { required: true, message: "验证码不能为空", trigger: "blur" },
           { min: 4, max: 4, message: "验证码长度为4", trigger: "change" }
@@ -327,6 +327,34 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    // 获取短信验证码
+    getMessageCode() {
+      // 手机号判断
+      const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+      if(!reg.test(this.regForm.phone)){
+        // 提示用户
+        return this.$message.error("请输入正确的手机号");
+      }
+      // 图形码验证
+      if(this.regForm.code == '' || this.regForm.code.length != 4){
+        return this.$message.error("验证码不太对哦!你是机器人吗?手动滑稽")
+      }
+      // 手机号 图形验证码都OK
+      axios({
+        method: "post",
+        url: process.env.VUE_APP_BASEURL + "/sendsms",
+        // 跨域携带cookie
+        withCredentials: true,
+        data: {
+          code: this.regForm.code,
+          phone: this.regForm.phone
+        }
+      }).then(res => {
+        // window.console.log(res);
+        // 提示用户
+        this.$message.success(`验证码为${res.data.data.captcha}`);
+      })
     }
   }
 };
