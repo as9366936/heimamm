@@ -101,7 +101,7 @@
               <el-input v-model="regForm.rcode" autocomplete="off"></el-input>
             </el-col>
             <el-col :span="7" :offset="1">
-              <el-button @click="getMessageCode">获取用户验证码</el-button>
+              <el-button :disabled="time!=0" @click="getMessageCode">{{time == 0 ? "获取用户验证码" : `还有${time}s继续获取`}}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -239,7 +239,9 @@ export default {
       // 宽度
       formLabelWidth: "60px",
       // 上传地址
-      imageUrl: ""
+      imageUrl: "",
+      // 倒计时
+      time: 0
     };
   },
   methods: {
@@ -332,15 +334,23 @@ export default {
     getMessageCode() {
       // 手机号判断
       const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
-      if(!reg.test(this.regForm.phone)){
+      if (!reg.test(this.regForm.phone)) {
         // 提示用户
         return this.$message.error("请输入正确的手机号");
       }
       // 图形码验证
-      if(this.regForm.code == '' || this.regForm.code.length != 4){
-        return this.$message.error("验证码不太对哦!你是机器人吗?手动滑稽")
+      if (this.regForm.code == "" || this.regForm.code.length != 4) {
+        return this.$message.error("验证码不太对哦!你是机器人吗?手动滑稽");
       }
       // 手机号 图形验证码都OK
+      // 开始计时
+      this.time = 60;
+      const timeID = setInterval(() => {
+        this.time--;
+        if(this.time == 0){
+          clearInterval(timeID);
+        }
+      }, 100);
       axios({
         method: "post",
         url: process.env.VUE_APP_BASEURL + "/sendsms",
@@ -354,7 +364,7 @@ export default {
         // window.console.log(res);
         // 提示用户
         this.$message.success(`验证码为${res.data.data.captcha}`);
-      })
+      });
     }
   }
 };
