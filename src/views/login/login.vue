@@ -59,7 +59,7 @@
     <el-dialog title="用户注册" :visible.sync="dialogFormVisible">
       <!-- 注册 表单 -->
       <el-form :rules="regRules" ref="regForm" :model="regForm">
-        <el-form-item label="头像" :label-width="formLabelWidth">
+        <el-form-item label="头像" :label-width="formLabelWidth" prop="avatar">
           <!-- 头像上传 -->
           <el-upload
             class="avatar-uploader"
@@ -72,6 +72,8 @@
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
+          <!-- 这里加一个隐藏的input,则可以进行头像的非空验证 -->
+          <el-input v-model="regForm.avatar" autocomplete="off" style="display:none"></el-input>
         </el-form-item>
         <el-form-item label="昵称" :label-width="formLabelWidth" prop="username">
           <el-input v-model="regForm.username" autocomplete="off"></el-input>
@@ -101,7 +103,10 @@
               <el-input v-model="regForm.rcode" autocomplete="off"></el-input>
             </el-col>
             <el-col :span="7" :offset="1">
-              <el-button :disabled="time!=0" @click="getMessageCode">{{time == 0 ? "获取用户验证码" : `还有${time}s继续获取`}}</el-button>
+              <el-button
+                :disabled="time!=0"
+                @click="getMessageCode"
+              >{{time == 0 ? "获取用户验证码" : `还有${time}s继续获取`}}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -182,7 +187,7 @@ export default {
         email: "",
         phone: "",
         password: "",
-        // 头像
+        // 头像上传成功返回的地址
         avatar: "",
         // 图片验证码
         code: "",
@@ -205,6 +210,10 @@ export default {
       },
       // 注册表单的规则
       regRules: {
+        // 头像验证
+        avatar: [
+          { required: true, message: "请选择一个头像吧", trigger: "change" }
+        ],
         // 注册昵称
         username: [
           { required: true, message: "昵称不能为空", trigger: "blur" },
@@ -243,7 +252,7 @@ export default {
       // 倒计时
       time: 0,
       // 头像上传地址
-      uploadUrl: process.env.VUE_APP_BASEURL + "/uploads",
+      uploadUrl: process.env.VUE_APP_BASEURL + "/uploads"
     };
   },
   methods: {
@@ -284,8 +293,30 @@ export default {
       this.$refs.regForm.validate(valid => {
         if (valid) {
           // 验证成功
-          this.$message.success("注册成功!");
+          // this.$message.success("注册成功!");
           // 调用接口
+          axios({
+            method: "post",
+            url: process.env.VUE_APP_BASEURL + "/register",
+            // 设置跨域请求可以携带cookie
+            withCredentials: true,
+            data: {
+              username: this.regForm.username,
+              email: this.regForm.email,
+              phone: this.regForm.phone,
+              password: this.regForm.password,
+              avatar: this.regForm.avatar,
+              rcode: this.regForm.rcode,
+            }
+          }).then(res => {
+            // window.console.log(res);
+            if(res.data.code == 200){
+              this.$message.success("恭喜,注册成功!");
+              this.dialogFormVisible = false;
+            }else{
+              this.$message.error("注册失败,请重新注册!");
+            }
+          })
         } else {
           // 验证失败
           this.$message.error("很遗憾,阁下有内容没有填对哦!");
@@ -317,7 +348,7 @@ export default {
       // 获取服务器返回的图片地址  注意: 不包含基地址
       // window.console.log(res.data.file_path);
       // 保存头像地址
-      this.regForm.avator = res.data.file_path;
+      this.regForm.avatar = res.data.file_path;
       // 生成本地的临时地址
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -356,7 +387,7 @@ export default {
       this.time = 60;
       const timeID = setInterval(() => {
         this.time--;
-        if(this.time == 0){
+        if (this.time == 0) {
           clearInterval(timeID);
         }
       }, 100);
