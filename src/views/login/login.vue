@@ -124,6 +124,9 @@
 // import axios from "axios";
 // 导入 登录接口
 import { login, sendsms, register } from "../../api/login.js";
+
+// 导入并使用token函数
+import { setToken } from "../../utils/token.js"
 export default {
   name: "login",
   data() {
@@ -286,11 +289,15 @@ export default {
               code: this.form.captcha
             }).then(res => {
               // window.console.log(res);
+              // 错误提示
               if (res.data.code === 202) {
                 this.$message.error(res.data.message + '!');
               } else if (res.data.code === 200) {
-                localStorage.setItem("token", res.data.data.token);
                 this.$message.success("登录成功!");
+                // 不建议用这个方法 key 可能会写错
+                // localStorage.setItem("token", res.data.data.token);
+                // 调用封装好的 token 方法
+                setToken(res.data.data.token);
                 this.$router.push("/index");
               }
             });
