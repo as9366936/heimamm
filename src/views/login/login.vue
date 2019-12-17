@@ -127,6 +127,7 @@ import { login, sendsms, register } from "../../api/login.js";
 
 // 导入并使用token函数
 import { setToken } from "../../utils/token.js"
+
 export default {
   name: "login",
   data() {

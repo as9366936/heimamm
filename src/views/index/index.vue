@@ -18,7 +18,13 @@
       <!-- 这里宽度给auto -->
       <el-aside width="auto" class="my-aside">
         <!-- 导航菜单 下面给上router这个属性,激活导航时以 index 作为 path 进行路由跳转 -->
-        <el-menu router text-color="#686A6E" :default-active="$route.path" class="el-menu-vertical-demo" :collapse="isCollapse">
+        <el-menu
+          router
+          text-color="#686A6E"
+          :default-active="$route.path"
+          class="el-menu-vertical-demo"
+          :collapse="isCollapse"
+        >
           <el-menu-item index="/index/chart">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
@@ -49,17 +55,26 @@
 </template>
 
 <script>
+// 导入并使用token函数
+import { getToken } from "../../utils/token.js";
+
 export default {
   name: "index",
   data() {
     return {
       // 是否折叠
-      isCollapse: false,
+      isCollapse: false
+    };
+  },
+  beforeCreate() {
+    if(!getToken()){
+      this.$message.warning("嗯哼,暗度陈仓吗?");
+      this.$router.push("/login");
     }
   },
   created() {
     window.console.log(this.$route);
-  },
+  }
 };
 </script>
 
