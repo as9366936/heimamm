@@ -285,7 +285,14 @@ export default {
               password: this.form.password,
               code: this.form.captcha
             }).then(res => {
-              window.console.log(res);
+              // window.console.log(res);
+              if (res.data.code === 202) {
+                this.$message.error(res.data.message + '!');
+              } else if (res.data.code === 200) {
+                localStorage.setItem("token", res.data.data.token);
+                this.$message.success("登录成功!");
+                this.$router.push("/index");
+              }
             });
           } else {
             // 验证失败
