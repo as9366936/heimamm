@@ -18,7 +18,7 @@
       <!-- 这里宽度给auto -->
       <el-aside width="auto" class="my-aside">
         <!-- 导航菜单 下面给上router这个属性,激活导航时以 index 作为 path 进行路由跳转 -->
-        <el-menu router text-color="#686A6E" default-active="/index/chart" class="el-menu-vertical-demo" :collapse="isCollapse">
+        <el-menu router text-color="#686A6E" :default-active="$route.path" class="el-menu-vertical-demo" :collapse="isCollapse">
           <el-menu-item index="/index/chart">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
@@ -54,8 +54,11 @@ export default {
   data() {
     return {
       // 是否折叠
-      isCollapse: true,
+      isCollapse: false,
     }
+  },
+  created() {
+    window.console.log(this.$route);
   },
 };
 </script>
