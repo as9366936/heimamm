@@ -5,17 +5,45 @@
       <div class="left">
         <!-- 图标 -->
         <i class="el-icon-s-fold icon"></i>
-        <img class="logo" src="../../assets/index_logo.png" alt="">
+        <img class="logo" src="../../assets/index_logo.png" alt />
         <span class="title">黑马面面</span>
       </div>
       <div class="right">
-        <img class="user-icon" src="../../assets/kuaijiu.jpg" alt="">
+        <img class="user-icon" src="../../assets/kuaijiu.jpg" alt />
         <span class="user-name">李达您好</span>
         <el-button type="primary" size="small">退出</el-button>
       </div>
     </el-header>
     <el-container>
-      <el-aside width="200px" class="my-aside">Aside</el-aside>
+      <el-aside width="200px" class="my-aside">
+        <el-menu
+          default-active="2"
+          class="el-menu-vertical-demo"
+          @open="handleOpen"
+          @close="handleClose"
+        >
+          <el-menu-item index="1">
+            <i class="el-icon-pie-chart"></i>
+            <span slot="title">数据概览</span>
+          </el-menu-item>
+          <el-menu-item index="2">
+            <i class="el-icon-user"></i>
+            <span slot="title">用户列表</span>
+          </el-menu-item>
+          <el-menu-item index="3">
+            <i class="el-icon-edit-outline"></i>
+            <span slot="title">题库列表</span>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-office-building"></i>
+            <span slot="title">企业列表</span>
+          </el-menu-item>
+          <el-menu-item index="5">
+            <i class="el-icon-notebook-2"></i>
+            <span slot="title">学科列表</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
       <el-main class="my-main">Main</el-main>
     </el-container>
   </el-container>
@@ -30,7 +58,7 @@ export default {
 <style lang="less">
 .index-container {
   height: 100%;
-  .my-header{
+  .my-header {
     // background-color: red;
     display: flex;
     justify-content: space-between;
@@ -52,7 +80,7 @@ export default {
 
       .title {
         font-size: 22px;
-        color: #49A1FF;
+        color: #49a1ff;
       }
     }
 
@@ -73,10 +101,10 @@ export default {
       }
     }
   }
-  .my-aside{
-    background-color: green;
+  .my-aside {
+    // background-color: green;
   }
-  .my-main{
+  .my-main {
     background-color: blue;
   }
 }
