@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-// 导入接受 路由
+// 导入接收 路由
 import router from './router/router.js'
 
 // 导入饿了么 ui
