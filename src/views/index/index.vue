@@ -4,7 +4,7 @@
     <el-header class="my-header">
       <div class="left">
         <!-- 图标 -->
-        <i class="el-icon-s-fold icon"></i>
+        <i class="el-icon-s-fold icon" @click="isCollapse = !isCollapse"></i>
         <img class="logo" src="../../assets/index_logo.png" alt />
         <span class="title">黑马面面</span>
       </div>
@@ -15,13 +15,10 @@
       </div>
     </el-header>
     <el-container>
-      <el-aside width="200px" class="my-aside">
-        <el-menu
-          default-active="2"
-          class="el-menu-vertical-demo"
-          @open="handleOpen"
-          @close="handleClose"
-        >
+      <!-- 这里宽度给auto -->
+      <el-aside width="auto" class="my-aside">
+        <!-- 导航菜单 -->
+        <el-menu default-active="1" class="el-menu-vertical-demo" :collapse="isCollapse">
           <el-menu-item index="1">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
@@ -51,7 +48,13 @@
 
 <script>
 export default {
-  name: "index"
+  name: "index",
+  data() {
+    return {
+      // 是否折叠
+      isCollapse: true,
+    }
+  },
 };
 </script>
 
@@ -70,6 +73,7 @@ export default {
       .el-icon-s-fold {
         font-size: 24px;
         margin-right: 22px;
+        cursor: pointer;
       }
 
       .logo {
@@ -103,6 +107,11 @@ export default {
   }
   .my-aside {
     // background-color: green;
+    // 导航样式
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+      width: 200px;
+      min-height: 400px;
+    }
   }
   .my-main {
     background-color: blue;
