@@ -81,7 +81,7 @@ export default {
         type: "warning"
       })
         .then(() => {
-          // 点击了 "狠心离开"
+          // 点击了 "狠心离开" 调用 用户登出方法
           userLogout().then(res => {
             // window.console.log(res);
             if (res.data.code === 200) {
@@ -188,7 +188,7 @@ export default {
     }
   }
   .my-main {
-    background-color: blue;
+    background-color: #E8E9EC;
   }
 }
 </style>

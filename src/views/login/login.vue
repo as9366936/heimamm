@@ -126,7 +126,7 @@
 import { login, sendsms, register } from "../../api/login.js";
 
 // 导入并使用token函数
-import { setToken } from "../../utils/token.js"
+import { setToken } from "../../utils/token.js";
 
 export default {
   name: "login",
@@ -292,7 +292,7 @@ export default {
               // window.console.log(res);
               // 错误提示
               if (res.data.code === 202) {
-                this.$message.error(res.data.message + '!');
+                this.$message.error(res.data.message + "!");
               } else if (res.data.code === 200) {
                 this.$message.success("登录成功!");
                 // 不建议用这个方法 key 可能会写错
@@ -419,6 +419,8 @@ export default {
         this.time--;
         if (this.time == 0) {
           clearInterval(timeID);
+          // 计时结束后,刷新
+          this.reg_changeCaptcha();
         }
       }, 100);
       // 发送axios请求
@@ -436,9 +438,14 @@ export default {
         code: this.regForm.code,
         phone: this.regForm.phone
       }).then(res => {
-        // window.console.log(res);
-        // 提示用户
-        this.$message.success(`验证码为${res.data.data.captcha}`);
+        window.console.log(res);
+        if (res.data.code === 200) {
+          // 提示用户
+          this.$message.success(`验证码为${res.data.data.captcha}`);
+        }else if(res.data.code === 0){
+          // 验证码错误
+          this.$message.error("验证码输入错误");
+        }
       });
     }
   }
