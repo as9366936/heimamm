@@ -19,6 +19,13 @@ import subject from "../views/index/subject/subject.vue"
 
 // 导包 导入VueRouter
 import VueRouter from 'vue-router'
+
+// 导入 token 工具函数
+import { getToken } from "../utils/token"
+
+// 导入 element-ui的 Message
+import { Message } from "element-ui";
+
 // Use一下 注册
 Vue.use(VueRouter)
 // 规则
@@ -62,6 +69,30 @@ const routes = [
 // 创建
 const router = new VueRouter({
     routes  // routes: routes
-})
+});
+
+// 导航守卫 全局前置守卫
+router.beforeEach((to, from, next) => {
+    // 去的路由信息
+    // window.console.log(to);
+    // 来的路由信息
+    // window.console.log(from);
+    // 继续向后执行, 如果不执行, 卡住不动
+    // next();
+
+    // 除了登录页面,都需要做登录判断
+    if (to.path != "/login") {
+        // 必须要登录才可以访问
+        if (!getToken()) {
+            Message.warning("嗯哼,暗度陈仓吗?");
+            next("/login");
+        }
+    } else {
+        // 是登录页 直接放过去
+        next();
+    }
+
+});
+
 // 暴露出去
 export default router

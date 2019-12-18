@@ -56,7 +56,7 @@
 
 <script>
 // 导入并使用token函数
-import { getToken } from "../../utils/token.js";
+import { removeToken } from "../../utils/token.js";
 // 导入 接口 方法
 import { getUserInfo } from "../../api/user.js";
 
@@ -70,11 +70,12 @@ export default {
       userInfo: ""
     };
   },
+  // 创建完成之前的钩子, 迁移到导航守卫中
   beforeCreate() {
-    if (!getToken()) {
-      this.$message.warning("嗯哼,暗度陈仓吗?");
-      this.$router.push("/login");
-    }
+    // if (!getToken()) {
+    //   this.$message.warning("嗯哼,暗度陈仓吗?");
+    //   this.$router.push("/login");
+    // }
   },
   created() {
     // window.console.log(this.$route);
@@ -84,6 +85,13 @@ export default {
         // 处理用户头像的地址
         res.data.data.avatar = `${process.env.VUE_APP_BASEURL}/${res.data.data.avatar}`;
         this.userInfo = res.data.data;
+      }else if(res.data.code === 206){
+        // 警告
+        this.$message.warning("Lok'tar ogar! 联盟的走开");
+        // 把token干掉
+        removeToken();
+        // 返回登录页面
+        this.$router.push('/login');
       }
     });
   }
