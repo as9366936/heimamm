@@ -56,9 +56,9 @@
 
 <script>
 // 导入并使用token函数
-import { removeToken } from "../../utils/token.js";
+// import { removeToken } from "../../utils/token.js";
 // 导入 接口 方法
-import { getUserInfo } from "../../api/user.js";
+// import { getUserInfo } from "../../api/user.js";
 
 export default {
   name: "index",
@@ -77,23 +77,24 @@ export default {
     //   this.$router.push("/login");
     // }
   },
+  // 迁移到导航守卫中
   created() {
     // window.console.log(this.$route);
-    getUserInfo().then(res => {
-      // window.console.log(res);
-      if (res.data.code === 200) {
-        // 处理用户头像的地址
-        res.data.data.avatar = `${process.env.VUE_APP_BASEURL}/${res.data.data.avatar}`;
-        this.userInfo = res.data.data;
-      }else if(res.data.code === 206){
-        // 警告
-        this.$message.warning("Lok'tar ogar! 联盟的走开");
-        // 把token干掉
-        removeToken();
-        // 返回登录页面
-        this.$router.push('/login');
-      }
-    });
+    // getUserInfo().then(res => {
+    //   // window.console.log(res);
+    //   if (res.data.code === 200) {
+    //     // 处理用户头像的地址
+    //     res.data.data.avatar = `${process.env.VUE_APP_BASEURL}/${res.data.data.avatar}`;
+    //     this.userInfo = res.data.data;
+    //   }else if(res.data.code === 206){
+    //     // 警告
+    //     this.$message.warning("Lok'tar ogar! 联盟的走开");
+    //     // 把token干掉
+    //     removeToken();
+    //     // 返回登录页面
+    //     this.$router.push('/login');
+    //   }
+    // });
   }
 };
 </script>

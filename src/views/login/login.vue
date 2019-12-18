@@ -205,7 +205,7 @@ export default {
         phone: [{ required: true, validator: checkPhone, trigger: "blur" }],
         // 密码
         password: [
-          { required: true, message: "密码不能为空", trigger: "change" },
+          { required: true, message: "密码不能为空", trigger: "blur" },
           { min: 6, max: 18, message: "密码长度为6 到 18", trigger: "change" }
         ],
         // 验证码

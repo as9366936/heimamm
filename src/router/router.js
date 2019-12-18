@@ -21,10 +21,13 @@ import subject from "../views/index/subject/subject.vue"
 import VueRouter from 'vue-router'
 
 // 导入 token 工具函数
-import { getToken } from "../utils/token"
+import { getToken, removeToken } from "../utils/token"
 
 // 导入 element-ui的 Message
 import { Message } from "element-ui";
+
+// 
+import { getUserInfo } from "../api/user.js"
 
 // Use一下 注册
 Vue.use(VueRouter)
@@ -85,11 +88,27 @@ router.beforeEach((to, from, next) => {
 
     // 除了登录页面,都需要做登录判断 (除了白名单,都需要做登录判断)
     // if (to.path != "/login")
-    if(whitePaths.includes(to.path.toLocaleLowerCase()) === false) {
+    if (whitePaths.includes(to.path.toLocaleLowerCase()) === false) {
         // 必须要登录才可以访问
         if (!getToken()) {
             Message.warning("嗯哼,暗度陈仓吗?");
             next("/login");
+        } else {
+            // 有token,对token进行判断
+            getUserInfo().then(res => {
+                // window.console.log(res);
+                if (res.data.code === 200) {
+                    // token 是对的 放走
+                    next();
+                } else if (res.data.code === 206) {
+                    // 警告
+                    Message.warning("Lok'tar ogar! 联盟的走开");
+                    // 把token干掉
+                    removeToken();
+                    // 返回登录页面
+                    next("/login");
+                }
+            });
         }
     } else {
         // 是登录页 直接放过去
