@@ -71,6 +71,9 @@ const router = new VueRouter({
     routes  // routes: routes
 });
 
+// 创建路由白名单数组
+const whitePaths = ["/login"];
+
 // 导航守卫 全局前置守卫
 router.beforeEach((to, from, next) => {
     // 去的路由信息
@@ -80,8 +83,9 @@ router.beforeEach((to, from, next) => {
     // 继续向后执行, 如果不执行, 卡住不动
     // next();
 
-    // 除了登录页面,都需要做登录判断
-    if (to.path != "/login") {
+    // 除了登录页面,都需要做登录判断 (除了白名单,都需要做登录判断)
+    // if (to.path != "/login")
+    if(whitePaths.includes(to.path.toLocaleLowerCase()) === false) {
         // 必须要登录才可以访问
         if (!getToken()) {
             Message.warning("嗯哼,暗度陈仓吗?");
