@@ -10,8 +10,8 @@
       </div>
       <div class="right">
         <img class="user-icon" :src=" $store.state.userInfo.avatar" alt />
-        <span class="user-name">{{  $store.state.userInfo.username }},您好</span>
-        <el-button type="primary" size="small">退出</el-button>
+        <span class="user-name">{{ $store.state.userInfo.username }},您好</span>
+        <el-button type="primary" size="small" @click="logout">退出</el-button>
       </div>
     </el-header>
     <el-container>
@@ -56,19 +56,52 @@
 
 <script>
 // 导入并使用token函数
-// import { removeToken } from "../../utils/token.js";
-// 导入 接口 方法
+import { removeToken } from "../../utils/token.js";
+// 导入 接口 方法  获取用户信息
 // import { getUserInfo } from "../../api/user.js";
+
+// 导入 接口 方法  退出登录
+import { userLogout } from "../../api/user.js";
 
 export default {
   name: "index",
   data() {
     return {
       // 是否折叠
-      isCollapse: false,
+      isCollapse: false
       // // 用户信息
       // userInfo: "",
     };
+  },
+  methods: {
+    logout() {
+      this.$confirm("你确定要离开这个网站吗o(╥﹏╥)o", "友情提示", {
+        confirmButtonText: "狠心离开",
+        cancelButtonText: "再留一会",
+        type: "warning"
+      })
+        .then(() => {
+          // 点击了 "狠心离开"
+          userLogout().then(res => {
+            // window.console.log(res);
+            if (res.data.code === 200) {
+              this.$message.success("拜拜,欢迎下次再来!");
+              // 用户已退出,移出token
+              removeToken();
+              // 清空用户信息
+              this.$store.state.userInfo = {};
+              // 返回登录页面
+              this.$router.push("/login");
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "欢迎回来!"
+          });
+        });
+    }
   },
   // 创建完成之前的钩子, 迁移到导航守卫中
   beforeCreate() {

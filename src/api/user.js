@@ -26,3 +26,14 @@ export function getUserInfo() {
         }
     })
 }
+
+// 暴露方法 退出登录
+export function userLogout() {
+    return instance({
+        url: "/logout",
+        method: "get",
+        headers: {
+            token: getToken()
+        }
+    })
+}
