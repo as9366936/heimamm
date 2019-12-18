@@ -26,8 +26,11 @@ import { getToken, removeToken } from "../utils/token"
 // 导入 element-ui的 Message
 import { Message } from "element-ui";
 
-// 
+// 导入 获取用户信息的接口
 import { getUserInfo } from "../api/user.js"
+
+// 导入仓库
+import store from "../store/store.js"
 
 // Use一下 注册
 Vue.use(VueRouter)
@@ -98,6 +101,10 @@ router.beforeEach((to, from, next) => {
             getUserInfo().then(res => {
                 // window.console.log(res);
                 if (res.data.code === 200) {
+                    // 把用户信息存起来
+                    store.state.userInfo = res.data.data;
+                    // 处理用户头像的地址
+                    store.state.userInfo.avatar = `${process.env.VUE_APP_BASEURL}/${store.state.userInfo.avatar}`;
                     // token 是对的 放走
                     next();
                 } else if (res.data.code === 206) {
