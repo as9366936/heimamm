@@ -101,10 +101,15 @@ router.beforeEach((to, from, next) => {
             getUserInfo().then(res => {
                 // window.console.log(res);
                 if (res.data.code === 200) {
-                    // 把用户信息存起来
-                    store.state.userInfo = res.data.data;
-                    // 处理用户头像的地址
-                    store.state.userInfo.avatar = `${process.env.VUE_APP_BASEURL}/${store.state.userInfo.avatar}`;
+                    // // 把用户信息存起来
+                    // store.state.userInfo = res.data.data;
+                    // // 处理用户头像的地址
+                    // store.state.userInfo.avatar = `${process.env.VUE_APP_BASEURL}/${store.state.userInfo.avatar}`;
+
+                    // 修改头像地址 基地址拼接上    图片地址
+                    res.data.data.avatar = process.env.VUE_APP_BASEURL + "/" + res.data.data.avatar;
+                    // commit 提交到仓库
+                    store.commit("changeUserInfo", res.data.data);
                     // token 是对的 放走
                     next();
                 } else if (res.data.code === 206) {
