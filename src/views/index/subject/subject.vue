@@ -5,16 +5,16 @@
       <!-- 头部表单 -->
       <el-form :inline="true" :model="subjectForm" class="demo-form-inline">
         <el-form-item label="学科编号">
-          <el-input v-model="subjectForm.number" class="shortInput"></el-input>
+          <el-input v-model="subjectForm.rid" class="shortInput"></el-input>
         </el-form-item>
         <el-form-item label="学科名称">
           <el-input v-model="subjectForm.name" class="longInput"></el-input>
         </el-form-item>
         <el-form-item label="创建者">
-          <el-input v-model="subjectForm.creator" class="shortInput"></el-input>
+          <el-input v-model="subjectForm.username" class="shortInput"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="subjectForm.state" class="longInput" placeholder="请选择状态">
+          <el-select v-model="subjectForm.status" class="longInput" placeholder="请选择状态">
             <el-option label="禁用" value="0"></el-option>
             <el-option label="启用" value="1"></el-option>
           </el-select>
@@ -26,7 +26,7 @@
           <el-button>清除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-plus" type="primary">新增学科</el-button>
+          <el-button icon="el-icon-plus" type="primary" @click="addFormVisible = true">新增学科</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -36,7 +36,7 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="index" label="序号"></el-table-column>
         <el-table-column prop="rid" label="学科编号"></el-table-column>
-        <el-table-column prop="name" label="学科姓名"></el-table-column>
+        <el-table-column prop="name" label="学科名称"></el-table-column>
         <el-table-column prop="short_name" label="简称"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
         <el-table-column prop="create_time" label="创建日期"></el-table-column>
@@ -63,20 +63,32 @@
         :total="400"
       ></el-pagination>
     </el-card>
+    <!-- 新增对话框 -->
+    <addDialog></addDialog>
   </div>
 </template>
 
 <script>
+// 导入组件
+import addDialog from "./components/addDialog.vue"
 export default {
   name: "subject",
+  // 注册组件
+  components: {
+    addDialog
+  },
   data() {
     return {
       // 头部表单
       subjectForm: {
-        number: "",
+        // 学科编号
+        rid: "",
+        // 学科名称
         name: "",
-        creator: "",
-        state: ""
+        // 创建者
+        username: "",
+        // 状态
+        status: ""
       },
       // 内容表单
       tableData: [
@@ -101,6 +113,10 @@ export default {
           operate: ""
         }
       ],
+
+      // 是否显示新增对话框
+      addFormVisible: false,
+
       // 当前页
       currentPage: 1
     };
@@ -138,12 +154,12 @@ export default {
   // 内容卡片
   .contentCard {
     thead {
-      color: #7A7C7F;
+      color: #7a7c7f;
       font-weight: bold;
     }
 
     tbody {
-      color: #5A5D62;
+      color: #5a5d62;
       font-weight: bold;
 
       // 内容按钮文字加粗
