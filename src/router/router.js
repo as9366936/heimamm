@@ -78,7 +78,7 @@ const router = new VueRouter({
 });
 
 // 创建路由白名单数组
-const whitePaths = ["/login"];
+const whitePaths = ["/login", "/"];
 
 // 导航守卫 全局前置守卫
 router.beforeEach((to, from, next) => {
