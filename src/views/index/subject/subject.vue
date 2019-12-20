@@ -40,15 +40,16 @@
         <el-table-column prop="short_name" label="简称"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
         <el-table-column prop="create_time" label="创建日期"></el-table-column>
-        <el-table-column prop="status" label="状态"></el-table-column>
-        <template>
-          <span>启用</span>
-          <span>禁用</span>
-        </template>
+        <el-table-column prop="status" label="状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status === 1">启用</span>
+            <span class="forbidden" v-else>禁用</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
-          <template>
+          <template slot-scope="scope">
             <el-button type="text">编辑</el-button>
-            <el-button type="text">禁用</el-button>
+            <el-button type="text">{{scope.row.status === 1?"禁用": "启用"}}</el-button>
             <el-button type="text">删除</el-button>
           </template>
         </el-table-column>
@@ -101,8 +102,7 @@ export default {
           short_name: "前端",
           username: "刘洋洋",
           create_time: "2019-11-21",
-          status: "启用",
-          operate: ""
+          status: "启用"
         },
         {
           index: "1",
@@ -111,8 +111,7 @@ export default {
           short_name: "后端",
           username: "北冰洋",
           create_time: "2019-11-21",
-          status: "禁用",
-          operate: ""
+          status: "禁用"
         }
       ],
 
@@ -133,7 +132,7 @@ export default {
         page: this.page,
         limit: this.limit,
         // 展开运算符(扩展运算符)
-        ...this.subjectForm,
+        ...this.subjectForm
       }).then(res => {
         // window.console.log(res);
         if (res.code === 200) {
@@ -141,7 +140,7 @@ export default {
           this.tableData = res.data.items;
         }
       });
-    }
+    },
   },
   created() {
     this.getData();
@@ -185,7 +184,10 @@ export default {
     tbody {
       color: #5a5d62;
       font-weight: bold;
-
+      // 禁用按钮颜色
+      .forbidden {
+        color: #FF3D3D;
+      }
       // 内容按钮文字加粗
       .el-button--text {
         span {
