@@ -56,9 +56,9 @@
       <!-- 分页器 -->
       <el-pagination
         background
-        :current-page="currentPage"
+        :current-page="page"
         :page-sizes="[100, 200, 300, 400]"
-        :page-size="100"
+        :page-size="limit"
         layout="total, sizes, prev, pager, next, jumper"
         :total="400"
       ></el-pagination>
@@ -118,15 +118,21 @@ export default {
 
       // 是否显示新增对话框
       addFormVisible: false,
+      // 页数据
+      // 页码
+      page: 1,
+      // 每一页多少条
+      limit: 2,
 
-      // 当前页
-      currentPage: 1,
     };
   },
   methods: {},
   created() {
     subjectList().then(res => {
-      window.console.log(res);
+      // window.console.log(res);
+      if(res.code === 200){
+        this.tableData = res.data.items;
+      }
     })
   },
 };
