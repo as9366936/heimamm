@@ -34,7 +34,7 @@
     <el-card class="contentCard">
       <!-- 内容表单 -->
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="index" label="序号"></el-table-column>
+        <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="rid" label="学科编号"></el-table-column>
         <el-table-column prop="name" label="学科名称"></el-table-column>
         <el-table-column prop="short_name" label="简称"></el-table-column>
@@ -70,9 +70,9 @@
 
 <script>
 // 导入组件
-import addDialog from "./components/addDialog.vue"
+import addDialog from "./components/addDialog.vue";
 // 导入接口
-import {subjectList} from "../../../api/subject.js"
+import { subjectList } from "../../../api/subject.js";
 export default {
   name: "subject",
   // 注册组件
@@ -122,19 +122,30 @@ export default {
       // 页码
       page: 1,
       // 每一页多少条
-      limit: 2,
-
+      limit: 2
     };
   },
-  methods: {},
-  created() {
-    subjectList().then(res => {
-      // window.console.log(res);
-      if(res.code === 200){
-        this.tableData = res.data.items;
-      }
-    })
+  methods: {
+    // 获取数据
+    getData() {
+      // 传递一个参数
+      subjectList({
+        page: this.page,
+        limit: this.limit,
+        // 展开运算符(扩展运算符)
+        ...this.subjectForm,
+      }).then(res => {
+        // window.console.log(res);
+        if (res.code === 200) {
+          // 保存表格数据
+          this.tableData = res.data.items;
+        }
+      });
+    }
   },
+  created() {
+    this.getData();
+  }
 };
 </script>
 
