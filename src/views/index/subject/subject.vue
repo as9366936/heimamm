@@ -50,7 +50,7 @@
           <template slot-scope="scope">
             <el-button type="text">编辑</el-button>
             <el-button type="text">{{scope.row.status === 1?"禁用": "启用"}}</el-button>
-            <el-button type="text">删除</el-button>
+            <el-button type="text" @click="deleteData(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -75,7 +75,7 @@
 // 导入组件
 import addDialog from "./components/addDialog.vue";
 // 导入接口
-import { subjectList } from "../../../api/subject.js";
+import { subjectList, subjectRemove } from "../../../api/subject.js";
 export default {
   name: "subject",
   // 注册组件
@@ -178,6 +178,27 @@ export default {
       this.page = page;
       // 重新获取数据
       this.getData();
+    },
+    // 清除数据
+    deleteData(item) {
+      this.$confirm("是否要删除该数据?", "友情提示", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          // 调用移除接口
+          subjectRemove({ id: item.id }).then(res => {
+            // window.console.log(res);
+            if (res.code === 200) {
+              // 提示用户
+              this.$message.success("删除成功!");
+              // 重新获取数据
+              this.getData();
+            }
+          });
+        })
+        .catch(() => {});
     }
   },
   created() {
