@@ -16,6 +16,9 @@ Vue.use(ElementUI);
 // 导入全局样式
 import "./style/bass.css";
 
+// 全局过滤器只要保证运行 即可  不需要使用值
+import './filters/filters.js'
+
 Vue.config.productionTip = false
 
 // 测试环境变量
