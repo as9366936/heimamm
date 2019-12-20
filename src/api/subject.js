@@ -12,11 +12,11 @@ export function subjectAdd(data) {
 }
 
 // 学科列表
-export function subjectList(data) {
+export function subjectList(params) {
     return instance({
         url: "/subject/list",
         method: "get",
-        data,
+        params,
     });
 }
 

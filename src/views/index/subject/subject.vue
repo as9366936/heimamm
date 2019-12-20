@@ -20,7 +20,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">搜索</el-button>
+          <el-button type="primary" @click="getData">搜索</el-button>
         </el-form-item>
         <el-form-item>
           <el-button>清除</el-button>
@@ -58,10 +58,10 @@
       <el-pagination
         background
         :current-page="page"
-        :page-sizes="[100, 200, 300, 400]"
+        :page-sizes="pageSizes"
         :page-size="limit"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       ></el-pagination>
     </el-card>
     <!-- 新增对话框 -->
@@ -121,7 +121,11 @@ export default {
       // 页码
       page: 1,
       // 每一页多少条
-      limit: 2
+      limit: 4,
+      // 页容量选项 数组
+      pageSizes: [2, 4, 6, 8],
+      // 总条数
+      total: 0
     };
   },
   methods: {
@@ -138,6 +142,8 @@ export default {
         if (res.code === 200) {
           // 保存表格数据
           this.tableData = res.data.items;
+          // 保存总条数
+          this.total = res.data.pagination.total;
         }
       });
     },
@@ -186,7 +192,7 @@ export default {
       font-weight: bold;
       // 禁用按钮颜色
       .forbidden {
-        color: #FF3D3D;
+        color: #ff3d3d;
       }
       // 内容按钮文字加粗
       .el-button--text {
