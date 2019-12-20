@@ -57,6 +57,8 @@
       <!-- 分页器 -->
       <el-pagination
         background
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
         :current-page="page"
         :page-sizes="pageSizes"
         :page-size="limit"
@@ -148,12 +150,32 @@ export default {
       });
     },
     // 清空搜索的数据
-    clearData(){
+    clearData() {
       // for (let key in this.subjectForm){
       //   // 获取每一个属性
       //   this.subjectForm[key] = "";
       // }
-      this.subjectForm = {},
+      (this.subjectForm = {}),
+        // 重新获取数据
+        this.getData();
+    },
+    // 页容量改变
+    // size 页容量
+    handleSizeChange(size) {
+      // window.console.log(size);
+      // 改变页容量的时候,默认返回第一页
+      this.page = 1;
+      // 保存页容量
+      this.limit = size;
+      // 重新获取数据
+      this.getData();
+    },
+    // 页码改变
+    // 当前的页数
+    handleCurrentChange(page) {
+      // window.console.log(page);
+      // 保存页码
+      this.page = page;
       // 重新获取数据
       this.getData();
     }
