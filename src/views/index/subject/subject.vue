@@ -23,7 +23,7 @@
           <el-button type="primary" @click="getData">搜索</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button>清除</el-button>
+          <el-button @click="clearData">清除</el-button>
         </el-form-item>
         <el-form-item>
           <el-button icon="el-icon-plus" type="primary" @click="addFormVisible = true">新增学科</el-button>
@@ -147,6 +147,16 @@ export default {
         }
       });
     },
+    // 清空搜索的数据
+    clearData(){
+      // for (let key in this.subjectForm){
+      //   // 获取每一个属性
+      //   this.subjectForm[key] = "";
+      // }
+      this.subjectForm = {},
+      // 重新获取数据
+      this.getData();
+    }
   },
   created() {
     this.getData();
