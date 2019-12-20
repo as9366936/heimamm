@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text">编辑</el-button>
+            <el-button type="text" @click="showEdit(scope.row)">编辑</el-button>
             <el-button
               type="text"
               @click="changeStatus(scope.row)"
@@ -71,12 +71,15 @@
     </el-card>
     <!-- 新增对话框 -->
     <addDialog></addDialog>
+    <!-- 编辑对话框 -->
+    <editDialog ref="editDialog"></editDialog>
   </div>
 </template>
 
 <script>
 // 导入组件
 import addDialog from "./components/addDialog.vue";
+import editDialog from "./components/editDialog.vue";
 // 导入接口
 import {
   subjectList,
@@ -87,7 +90,8 @@ export default {
   name: "subject",
   // 注册组件
   components: {
-    addDialog
+    addDialog,
+    editDialog
   },
   data() {
     return {
@@ -126,6 +130,8 @@ export default {
 
       // 是否显示新增对话框
       addFormVisible: false,
+      // 是否显示编辑对话框
+      editFormVisible: false,
       // 页数据
       // 页码
       page: 1,
@@ -219,6 +225,14 @@ export default {
           this.$message.success("状态修改成功!");
         }
       });
+    },
+    // 开始编辑
+    showEdit(item){
+      // 显示编辑对话框
+      this.editFormVisible = true;
+      // 复杂类型的赋值 是引用地址赋值
+      // JSON.parse(JSON.stringify(item)); 深拷贝  function无法拷贝
+      this.$refs.editDialog.editForm = JSON.parse(JSON.stringify(item));
     }
   },
   created() {

@@ -20,7 +20,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$parent.addFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="submitForm">确 定</el-button>
+      <el-button type="primary" @click="submitForm">新 增</el-button>
     </div>
   </el-dialog>
 </template>
@@ -60,7 +60,7 @@ export default {
           // 对
           // 调用接口,发送axios请求
           subjectAdd(this.addForm).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
             if (res.code === 200) {
               this.$message.success("新增成功!");
               // 关闭弹框
