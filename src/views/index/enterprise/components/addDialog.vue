@@ -62,7 +62,7 @@ export default {
           // 对
           // 调用接口,发送axios请求
           enterpriseAdd(this.addForm).then(res => {
-            window.console.log(res);
+            // window.console.log(res);
             if (res.code === 200) {
               this.$message.success("新增成功!");
               // 关闭弹框

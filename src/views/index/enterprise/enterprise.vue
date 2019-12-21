@@ -205,7 +205,7 @@ export default {
         .then(() => {
           // 调用移除接口
           enterpriseRemove({ id: item.id }).then(res => {
-            // window.console.log(res);
+            window.console.log(res);
             if (res.code === 200) {
               // 提示用户
               this.$message.success("删除成功!");
