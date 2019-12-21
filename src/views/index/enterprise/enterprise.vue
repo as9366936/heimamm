@@ -1,20 +1,20 @@
 <template>
-  <div class="subject-box">
+  <div class="enterprise-box">
     <!-- 头部卡片 -->
     <el-card class="headCard">
       <!-- 头部表单 -->
-      <el-form :inline="true" :model="subjectForm" class="demo-form-inline">
-        <el-form-item label="学科编号">
-          <el-input v-model="subjectForm.rid" class="shortInput"></el-input>
+      <el-form :inline="true" :model="enterpriseForm" class="demo-form-inline">
+        <el-form-item label="企业编号">
+          <el-input v-model="enterpriseForm.eid" class="shortInput"></el-input>
         </el-form-item>
-        <el-form-item label="学科名称">
-          <el-input v-model="subjectForm.name" class="longInput"></el-input>
+        <el-form-item label="企业名称">
+          <el-input v-model="enterpriseForm.name" class="longInput"></el-input>
         </el-form-item>
         <el-form-item label="创建者">
-          <el-input v-model="subjectForm.username" class="shortInput"></el-input>
+          <el-input v-model="enterpriseForm.username" class="shortInput"></el-input>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="subjectForm.status" class="longInput" placeholder="请选择状态">
+          <el-select v-model="enterpriseForm.status" class="longInput" placeholder="请选择状态">
             <el-option label="禁用" value="0"></el-option>
             <el-option label="启用" value="1"></el-option>
           </el-select>
@@ -26,7 +26,7 @@
           <el-button @click="clearData">清除</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-plus" type="primary" @click="addFormVisible = true">新增学科</el-button>
+          <el-button icon="el-icon-plus" type="primary" @click="addFormVisible = true">新增企业</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -35,8 +35,8 @@
       <!-- 内容表单 -->
       <el-table :data="tableData" style="width: 100%">
         <el-table-column type="index" label="序号"></el-table-column>
-        <el-table-column prop="rid" label="学科编号"></el-table-column>
-        <el-table-column prop="name" label="学科名称"></el-table-column>
+        <el-table-column prop="eid" label="企业编号"></el-table-column>
+        <el-table-column prop="name" label="企业名称"></el-table-column>
         <el-table-column prop="short_name" label="简称"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
         <el-table-column prop="create_time" label="创建日期">
@@ -85,12 +85,12 @@ import addDialog from "./components/addDialog.vue";
 import editDialog from "./components/editDialog.vue";
 // 导入接口
 import {
-  subjectList,
-  subjectRemove,
-  subjectStatus
-} from "../../../api/subject.js";
+  enterpriseList,
+  enterpriseRemove,
+  enterpriseStatus
+} from "../../../api/enterprise.js";
 export default {
-  name: "subject",
+  name: "enterprise",
   // 注册组件
   components: {
     addDialog,
@@ -99,10 +99,10 @@ export default {
   data() {
     return {
       // 头部表单
-      subjectForm: {
-        // 学科编号
-        rid: "",
-        // 学科名称
+      enterpriseForm: {
+        // 企业编号
+        eid: "",
+        // 企业名称
         name: "",
         // 创建者
         username: "",
@@ -113,7 +113,7 @@ export default {
       tableData: [
         {
           index: "1",
-          rid: "QD001",
+          eid: "QD001",
           name: "前端与移动开发",
           short_name: "前端",
           username: "刘洋洋",
@@ -122,7 +122,7 @@ export default {
         },
         {
           index: "1",
-          rid: "QD001",
+          eid: "QD001",
           name: "java",
           short_name: "后端",
           username: "北冰洋",
@@ -150,11 +150,11 @@ export default {
     // 获取数据
     getData() {
       // 传递一个参数
-      subjectList({
+      enterpriseList({
         page: this.page,
         limit: this.limit,
         // 展开运算符(扩展运算符)
-        ...this.subjectForm
+        ...this.enterpriseForm
       }).then(res => {
         // window.console.log(res);
         if (res.code === 200) {
@@ -167,11 +167,11 @@ export default {
     },
     // 清空搜索的数据
     clearData() {
-      // for (let key in this.subjectForm){
+      // for (let key in this.enterpriseForm){
       //   // 获取每一个属性
-      //   this.subjectForm[key] = "";
+      //   this.enterpriseForm[key] = "";
       // }
-      (this.subjectForm = {}),
+      (this.enterpriseForm = {}),
         // 重新获取数据
         this.getData();
     },
@@ -204,7 +204,7 @@ export default {
       })
         .then(() => {
           // 调用移除接口
-          subjectRemove({ id: item.id }).then(res => {
+          enterpriseRemove({ id: item.id }).then(res => {
             // window.console.log(res);
             if (res.code === 200) {
               // 提示用户
@@ -219,7 +219,7 @@ export default {
     // 点击切换状态
     changeStatus(item) {
       // 调用切换状态的接口
-      subjectStatus({ id: item.id }).then(res => {
+      enterpriseStatus({ id: item.id }).then(res => {
         // window.console.log(res);
         if (res.code === 200) {
           // 重新获取数据
@@ -245,7 +245,7 @@ export default {
 </script>
 
 <style lang="less">
-.subject-box {
+.enterprise-box {
   // 头部卡片
   .headCard {
     margin-bottom: 19px;

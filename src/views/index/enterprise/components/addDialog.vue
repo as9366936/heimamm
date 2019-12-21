@@ -1,20 +1,20 @@
 <template>
   <!-- 新增对话框 -->
-  <el-dialog class="add-dialog" center title="新增学科" :visible.sync="$parent.addFormVisible">
+  <el-dialog class="add-dialog" center title="新增企业" :visible.sync="$parent.addFormVisible">
     <el-form ref="addForm" :model="addForm" :rules="addFormRules">
-      <el-form-item label="学科编号" prop="rid" :label-width="formLabelWidth">
-        <el-input v-model="addForm.rid" autocomplete="off"></el-input>
+      <el-form-item label="企业编号" prop="eid" :label-width="formLabelWidth">
+        <el-input v-model="addForm.eid" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="学科名称" prop="name" :label-width="formLabelWidth">
+      <el-form-item label="企业名称" prop="name" :label-width="formLabelWidth">
         <el-input v-model="addForm.name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="学科简称" :label-width="formLabelWidth">
+      <el-form-item label="企业简称" prop="short_name" :label-width="formLabelWidth">
         <el-input v-model="addForm.short_name" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="学科简介" :label-width="formLabelWidth">
+      <el-form-item label="企业简介" prop="intro" :label-width="formLabelWidth">
         <el-input v-model="addForm.intro" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="学科备注" :label-width="formLabelWidth">
+      <el-form-item label="企业备注" :label-width="formLabelWidth">
         <el-input v-model="addForm.remark" autocomplete="off"></el-input>
       </el-form-item>
     </el-form>
@@ -27,29 +27,31 @@
 
 <script>
 // 导入接口
-import { subjectAdd } from "../../../../api/subject.js";
+import { enterpriseAdd } from "../../../../api/enterprise.js";
 export default {
   data() {
     return {
       // 新增对话框表单
       addForm: {
-        // 学科编号
-        rid: "",
-        // 学科名称
+        // 企业编号
+        eid: "",
+        // 企业名称
         name: "",
-        // 学科简称
+        // 企业简称
         short_name: "",
-        // 学科简介
+        // 企业简介
         intro: "",
-        // 学科备注
+        // 企业备注
         remark: ""
       },
       // 宽度
       formLabelWidth: "80px",
       // 添加表单的验证规则
       addFormRules: {
-        rid: [{ required: true, message: "学科编号不能为空", trigger: "blur" }],
-        name: [{ required: true, message: "学科名称不能为空", trigger: "blur" }]
+        eid: [{ required: true, message: "企业编号不能为空", trigger: "blur" }],
+        name: [{ required: true, message: "企业名称不能为空", trigger: "blur" }],
+        short_name: [{ required: true, message: "企业简称不能为空", trigger: "blur" }],
+        intro: [{ required: true, message: "企业简介不能为空", trigger: "blur" }],
       }
     };
   },
@@ -59,18 +61,18 @@ export default {
         if (valid) {
           // 对
           // 调用接口,发送axios请求
-          subjectAdd(this.addForm).then(res => {
-            // window.console.log(res);
+          enterpriseAdd(this.addForm).then(res => {
+            window.console.log(res);
             if (res.code === 200) {
               this.$message.success("新增成功!");
               // 关闭弹框
               this.$parent.addFormVisible = false;
-              // 重新渲染学科列表
+              // 重新渲染企业列表
               this.$parent.getData();
               // 清空已输入的数据
               this.addForm = {};
             }else if(res.code === 201){
-              this.$message.warning("学科编号已存在,请重新输入!");
+              this.$message.warning("企业编号已存在,请重新输入!");
             }
           });
         } else {
@@ -85,7 +87,7 @@ export default {
 </script>
 
 <style lang="less">
-// 新增学科对话框
+// 新增企业对话框
 .add-dialog {
   // 设置宽度
   .el-dialog {
