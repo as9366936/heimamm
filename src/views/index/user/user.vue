@@ -11,7 +11,7 @@
           <el-input v-model="userForm.email" class="longInput"></el-input>
         </el-form-item>
         <el-form-item label="角色">
-          <el-select v-model="userForm.role_id" class="longInput" placeholder="请选择状态">
+          <el-select v-model="userForm.role_id" class="longInput" placeholder="请选择角色">
             <el-option label="超级管理员" value="1"></el-option>
             <el-option label="管理员" value="2"></el-option>
             <el-option label="老师" value="3"></el-option>
@@ -39,9 +39,9 @@
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="role_id" label="角色">
           <template slot-scope="scope">
-            <span v-if="scope.row.status === 1">超级管理员</span>
-            <span v-else-if="scope.row.status === 2">管理员</span>
-            <span v-else-if="scope.row.status === 3">老师</span>
+            <span v-if="scope.row.role_id === 1">超级管理员</span>
+            <span v-else-if="scope.row.role_id === 2">管理员</span>
+            <span v-else-if="scope.row.role_id === 3">老师</span>
             <span v-else>学生</span>
           </template>
         </el-table-column>

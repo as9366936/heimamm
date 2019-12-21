@@ -223,7 +223,7 @@ export default {
         // 注册昵称
         username: [
           { required: true, message: "昵称不能为空", trigger: "blur" },
-          { min: 1, max: 6, message: "昵称长度为2 到 8位", trigger: "blur" }
+          { min: 1, max: 8, message: "昵称长度为1 到 8位", trigger: "blur" }
         ],
         // 注册邮箱
         email: [{ required: true, validator: checkEmail, trigger: "blur" }],
