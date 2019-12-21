@@ -27,7 +27,7 @@ import { getToken, removeToken } from "../utils/token"
 import { Message } from "element-ui";
 
 // 导入 获取用户信息的接口
-import { getUserInfo } from "../api/user.js"
+import { getUserInfo } from "../api/userInfo.js"
 
 // 导入仓库
 import store from "../store/store.js"

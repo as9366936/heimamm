@@ -1,39 +1,56 @@
-// 导入 axios
-import axios from "axios";
+// 导入 抽取的  axios的请求对象
+import instance from "../utils/request.js"
 
-// 导入 token 的工具函数
-import { getToken } from "../utils/token.js"
-
-// 统一设置 axios 的设置
-// axios.defaults 只能设置一个 axios 对象
-// 如果项目中 可能用到多个 axios 支持创建一个
-// 后续的接口直接调用 instance 即可
-const instance = axios.create({
-    baseURL: process.env.VUE_APP_BASEURL,
-    // 跨域携带cookie
-    withCredentials: true
-});
-
-// 暴露方法 获取用户信息
-export function getUserInfo() {
+// 获取用户列表
+export function userList(params) {
     return instance({
-        // url: "/user/info",
-        // 这里接口文档有错,不用写"/user"
-        url: "/info",
+        url: "/user/list",
         method: "get",
-        headers: {
-            token: getToken()
-        }
-    })
+        params,
+    });
 }
 
-// 暴露方法 退出登录
-export function userLogout() {
+// 后台创建用户
+export function userAdd(data) {
     return instance({
-        url: "/logout",
-        method: "get",
-        headers: {
-            token: getToken()
-        }
-    })
+        url: "/user/add",
+        method: "post",
+        data,
+    });
+}
+
+// 设置用户状态
+export function userStatus(data) {
+    return instance({
+        url: "/user/status",
+        method: "post",
+        data,
+    });
+}
+
+// 删除用户
+export function userRemove(data) {
+    return instance({
+        url: "/user/remove",
+        method: "post",
+        data,
+    });
+}
+
+// 编辑用户
+export function userEdit(data) {
+    return instance({
+        url: "/user/edit",
+        method: "post",
+        data,
+    });
+}
+
+// 获取token
+export function getToken(data) {
+    return instance({
+        url: "/user/token",
+        method: "post",
+        data,
+    });
 }

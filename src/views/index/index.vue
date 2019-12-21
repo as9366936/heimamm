@@ -61,7 +61,7 @@ import { removeToken } from "../../utils/token.js";
 // import { getUserInfo } from "../../api/user.js";
 
 // 导入 接口 方法  退出登录
-import { userLogout } from "../../api/user.js";
+import { userLogout } from "../../api/userInfo.js";
 
 export default {
   name: "index",
