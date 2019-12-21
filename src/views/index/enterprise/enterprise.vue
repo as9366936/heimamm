@@ -236,6 +236,7 @@ export default {
       // 复杂类型的赋值 是引用地址赋值
       // JSON.parse(JSON.stringify(item)); 深拷贝  function无法拷贝
       this.$refs.editDialog.editForm = JSON.parse(JSON.stringify(item));
+      window.console.log(JSON.parse(JSON.stringify(item)));
     }
   },
   created() {
