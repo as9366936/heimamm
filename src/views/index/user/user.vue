@@ -36,12 +36,7 @@
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="phone" label="电话"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
-        <el-table-column prop="role_id" label="角色">
-          <template slot-scope="scope">
-            <span v-if="scope.row.role_id === 2">管理员</span>
-            <span v-else-if="scope.row.role_id === 3">老师</span>
-            <span v-else>学生</span>
-          </template>
+        <el-table-column prop="role" label="角色">
         </el-table-column>
         <el-table-column prop="remark" label="备注"></el-table-column>
         <el-table-column prop="status" label="状态">
@@ -102,7 +97,7 @@ export default {
         // 用户邮箱
         email: "",
         // 角色
-        role_id: ""
+        role: ""
       },
       // 内容表单
       tableData: [],

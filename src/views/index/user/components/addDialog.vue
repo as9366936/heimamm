@@ -89,7 +89,7 @@ export default {
               // 清空已输入的数据
               this.addForm = {};
             } else if (res.code === 201) {
-              this.$message.warning("用户已存在,请重新输入!");
+              this.$message.warning(res.message);
             }
           });
         } else {

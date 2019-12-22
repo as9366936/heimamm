@@ -13,15 +13,15 @@
       </el-form-item>
       <el-form-item label="角色" prop="role_id" :label-width="formLabelWidth">
         <el-select v-model="editForm.role_id" placeholder="请选择角色">
-          <el-option label="管理员" value="2"></el-option>
-          <el-option label="老师" value="3"></el-option>
-          <el-option label="学生" value="4"></el-option>
+          <el-option label="管理员" :value="2"></el-option>
+          <el-option label="老师" :value="3"></el-option>
+          <el-option label="学生" :value="4"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="状态" :label-width="formLabelWidth">
         <el-select v-model="editForm.status" placeholder="请选择状态">
-          <el-option label="禁用" value="0"></el-option>
-          <el-option label="启用" value="1"></el-option>
+          <el-option label="禁用" :value="0"></el-option>
+          <el-option label="启用" :value="1"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="用户备注" :label-width="formLabelWidth">
@@ -89,7 +89,7 @@ export default {
               // 清空已输入的数据
               this.editForm = {};
             } else if (res.code === 201) {
-              this.$message.warning("用户编号已存在,请重新输入!");
+              this.$message.warning(res.message);
             }
           });
         } else {

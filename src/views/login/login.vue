@@ -248,6 +248,8 @@ export default {
               // 错误提示
               if (res.data.code === 202) {
                 this.$message.error(res.data.message + "!");
+                // 刷新验证码
+                this.changeCaptcha();
               } else if (res.data.code === 200) {
                 this.$message.success("登录成功!");
                 // 不建议用这个方法 key 可能会写错
@@ -313,7 +315,7 @@ export default {
     changeCaptcha() {
       this.captchaUrl =
         process.env.VUE_APP_BASEURL + "/captcha?type=login&" + Date.now(); // 时间戳
-      // 这里login后面注意加上&!!!
+      // 这里login后面注意加上&  !!!
     },
     // 注册列表重新获取验证码
     reg_changeCaptcha() {
@@ -374,7 +376,7 @@ export default {
         this.time--;
         if (this.time == 0) {
           clearInterval(timeID);
-          // 计时结束后,刷新
+          // 计时结束后,刷新验证码
           this.reg_changeCaptcha();
         }
       }, 100);
