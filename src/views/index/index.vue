@@ -25,23 +25,23 @@
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
         >
-          <el-menu-item index="/index/chart">
+          <el-menu-item index="/index/chart" v-if="['管理员', '老师'].includes(userInfo.role)">
             <i class="el-icon-pie-chart"></i>
             <span slot="title">数据概览</span>
           </el-menu-item>
-          <el-menu-item index="/index/user">
+          <el-menu-item index="/index/user" v-if="['管理员'].includes(userInfo.role)">
             <i class="el-icon-user"></i>
             <span slot="title">用户列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/question">
+          <el-menu-item index="/index/question" v-if="['管理员', '老师', '学生'].includes(userInfo.role)">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">题库列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/enterprise">
+          <el-menu-item index="/index/enterprise" v-if="['管理员', '老师'].includes(userInfo.role)">
             <i class="el-icon-office-building"></i>
             <span slot="title">企业列表</span>
           </el-menu-item>
-          <el-menu-item index="/index/subject">
+          <el-menu-item index="/index/subject" v-if="['管理员', '老师'].includes(userInfo.role)">
             <i class="el-icon-notebook-2"></i>
             <span slot="title">学科列表</span>
           </el-menu-item>
@@ -106,7 +106,7 @@ export default {
   // 利用计算属性简化Vuex数据获取
   computed: {
     // 用户信息
-    userInfo(){
+    userInfo() {
       // 直接返回仓库的用户数据即可
       return this.$store.state.userInfo;
     }
@@ -197,7 +197,7 @@ export default {
     }
   }
   .my-main {
-    background-color: #E8E9EC;
+    background-color: #e8e9ec;
   }
 }
 </style>
