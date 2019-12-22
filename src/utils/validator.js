@@ -1,3 +1,4 @@
+// 验证规则
 /**
    * @description: 自定义校验规则函数,检验手机号是否规范
    * @param {type} rule 规则
