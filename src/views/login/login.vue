@@ -251,7 +251,6 @@ export default {
                 // 刷新验证码
                 this.changeCaptcha();
               } else if (res.data.code === 200) {
-                this.$message.success("登录成功!");
                 // 不建议用这个方法 key 可能会写错
                 // localStorage.setItem("token", res.data.data.token);
                 // 调用封装好的 token 方法

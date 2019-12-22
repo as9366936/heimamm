@@ -120,6 +120,7 @@ export default {
   },
   // 迁移到导航守卫中
   created() {
+    this.$message.success(`${this.$store.state.userInfo.username}欢迎回来!`);
     // window.console.log(this.$route);
     // getUserInfo().then(res => {
     //   // window.console.log(res);
