@@ -5,7 +5,6 @@ import router from './router/router.js'
 // 导入接收 仓库
 import store from './store/store.js'
 
-
 // 导入饿了么 ui
 import ElementUI from 'element-ui';
 // 导入饿了么 的样式

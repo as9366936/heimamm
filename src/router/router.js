@@ -5,6 +5,14 @@ import login from "../views/login/login.vue"
 // 导入首页组件
 import index from "../views/index/index.vue"
 
+// 解决   Uncaught (in promise) undefined   异常报错 (在使用被禁用的账号登录的时候)
+// ----------------------------------------
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
+// ----------------------------------------
+
 // 导入嵌套路由的组件
 // 数据(图表)组件
 import chart from "../views/index/chart/chart.vue"
@@ -47,27 +55,47 @@ const routes = [
     {
         path: '/index',
         component: index,
+        // // 路由重定向
+        // redirect: "/index/chart",
+        meta: {
+            power: ['管理员', '老师', '学生']
+        },
         // 嵌套路由
         children: [
             {
                 path: 'chart',
                 component: chart,
+                meta: {
+                    power: ['管理员', '老师']
+                }
             },
             {
                 path: 'user',
                 component: user,
+                meta: {
+                    power: ['管理员']
+                }
             },
             {
                 path: 'question',
                 component: question,
+                meta: {
+                    power: ['管理员', '老师', '学生']
+                }
             },
             {
                 path: 'enterprise',
                 component: enterprise,
+                meta: {
+                    power: ['管理员', '老师']
+                }
             },
             {
                 path: 'subject',
                 component: subject,
+                meta: {
+                    power: ['管理员', '老师']
+                }
             },
         ]
     },
@@ -101,6 +129,7 @@ router.beforeEach((to, from, next) => {
             getUserInfo().then(res => {
                 // window.console.log(res);
                 if (res.data.code === 200) {
+                    // token是对的
                     // 状态判断
                     if (res.data.data.status === 0) {
                         // 禁用状态
@@ -112,11 +141,20 @@ router.beforeEach((to, from, next) => {
                         res.data.data.avatar = process.env.VUE_APP_BASEURL + "/" + res.data.data.avatar;
                         // commit 提交到仓库
                         store.commit("changeUserInfo", res.data.data);
-                        // token 是对的 放走
-                        next();
+
+                        // 判断当前这个用户是否可以去
+                        // window.console.log(to);
+                        // window.console.log(res.data.data);
+                        // meta访问的白名单匹配
+                        if(to.meta.power.includes(res.data.data.role)){
+                            // 存在
+                            next()
+                        }else{
+                            Message.warning('你没有访问这里的权限哦!请联系管理员')
+                        }
                     }
                 } else if (res.data.code === 206) {
-                    // 警告
+                    // token不对,警告
                     Message.warning("Lok'tar ogar! 联盟的走开");
                     // 把token干掉
                     removeToken();
