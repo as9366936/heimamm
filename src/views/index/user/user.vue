@@ -5,14 +5,13 @@
       <!-- 头部表单 -->
       <el-form :inline="true" :model="userForm" class="demo-form-inline">
         <el-form-item label="用户名称">
-          <el-input v-model="userForm.user_name" class="shortInput"></el-input>
+          <el-input v-model="userForm.username" class="shortInput"></el-input>
         </el-form-item>
         <el-form-item label="用户邮箱">
           <el-input v-model="userForm.email" class="longInput"></el-input>
         </el-form-item>
         <el-form-item label="角色">
           <el-select v-model="userForm.role_id" class="longInput" placeholder="请选择角色">
-            <el-option label="超级管理员" value="1"></el-option>
             <el-option label="管理员" value="2"></el-option>
             <el-option label="老师" value="3"></el-option>
             <el-option label="学生" value="4"></el-option>
@@ -39,8 +38,7 @@
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="role_id" label="角色">
           <template slot-scope="scope">
-            <span v-if="scope.row.role_id === 1">超级管理员</span>
-            <span v-else-if="scope.row.role_id === 2">管理员</span>
+            <span v-if="scope.row.role_id === 2">管理员</span>
             <span v-else-if="scope.row.role_id === 3">老师</span>
             <span v-else>学生</span>
           </template>
@@ -100,7 +98,7 @@ export default {
       // 头部表单
       userForm: {
         // 用户名称
-        user_name: "",
+        username: "",
         // 用户邮箱
         email: "",
         // 角色

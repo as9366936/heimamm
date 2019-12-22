@@ -13,7 +13,6 @@
       </el-form-item>
       <el-form-item label="角色" prop="role_id" :label-width="formLabelWidth">
         <el-select v-model="editForm.role_id" placeholder="请选择角色">
-          <el-option label="超级管理员" value="1"></el-option>
           <el-option label="管理员" value="2"></el-option>
           <el-option label="老师" value="3"></el-option>
           <el-option label="学生" value="4"></el-option>
@@ -31,7 +30,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$parent.editFormVisible = false">取 消</el-button>
-      <el-button type="primary" @click="submitForm">新 增</el-button>
+      <el-button type="primary" @click="submitForm">编 辑</el-button>
     </div>
   </el-dialog>
 </template>
@@ -39,56 +38,10 @@
 <script>
 // 导入接口
 import { userEdit } from "../../../../api/user.js";
+// 导入验证方法
+import {checkPhone, checkEmail} from "../../../../utils/validator.js"
 export default {
   data() {
-    /**
-     * @description: 自定义校验规则函数,检验手机号是否规范
-     * @param {type} rule 规则
-     * @param {string} value 用户输入的数据
-     * @param {function} callback 回调函数
-     * @return:
-     */
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("手机号不能为空"));
-      } else {
-        // 判断手机号的格式
-        //正则
-        const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
-        // 判断是否符合
-        // .test(验证的字符串) 返回的是true 或者 false
-        if (reg.test(value) == true) {
-          callback();
-        } else {
-          // 不满足  手机号的格式
-          callback(new Error("老铁,你的手机号写错了"));
-        }
-      }
-    };
-    /**
-     * @description:  自定义校验规则函数,检验邮箱是否规范
-     * @param {type}  rule 规则
-     * @param {string}  value 用户输入的数据
-     * @param {function}  callback 回调函数
-     * @return:
-     */
-    var checkEmail = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error("邮箱不能为空"));
-      } else {
-        // 判断邮箱的格式
-        //正则
-        const reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
-        // 判断是否符合
-        // .test(验证的字符串) 返回的是true 或者 false
-        if (reg.test(value) == true) {
-          callback();
-        } else {
-          // 不满足  邮箱的格式
-          callback(new Error("老铁,你的邮箱写错了"));
-        }
-      }
-    };
     return {
       // 编辑对话框表单
       editForm: {
