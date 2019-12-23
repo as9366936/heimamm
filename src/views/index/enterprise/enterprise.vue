@@ -56,7 +56,7 @@
               type="text"
               @click="changeStatus(scope.row)"
             >{{scope.row.status === 1?"禁用": "启用"}}</el-button>
-            <el-button type="text" @click="deleteData(scope.row)">删除</el-button>
+            <el-button type="text" @click="deleteData(scope.row)" v-remove="['老师', '学生']">删除</el-button>
           </template>
         </el-table-column>
       </el-table>

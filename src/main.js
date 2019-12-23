@@ -18,6 +18,9 @@ import "./style/bass.css";
 // 全局过滤器只要保证运行 即可  不需要使用值
 import './filters/filters.js'
 
+// 导入自定义指令 不需要使用值
+import "./directives/directives.js"
+
 Vue.config.productionTip = false
 
 // 测试环境变量
