@@ -25,26 +25,19 @@
           class="el-menu-vertical-demo"
           :collapse="isCollapse"
         >
-          <el-menu-item index="/index/chart" v-if="['管理员', '老师'].includes(userInfo.role)">
-            <i class="el-icon-pie-chart"></i>
-            <span slot="title">数据概览</span>
-          </el-menu-item>
-          <el-menu-item index="/index/user" v-if="['管理员'].includes(userInfo.role)">
-            <i class="el-icon-user"></i>
-            <span slot="title">用户列表</span>
-          </el-menu-item>
-          <el-menu-item index="/index/question" v-if="['管理员', '老师', '学生'].includes(userInfo.role)">
-            <i class="el-icon-edit-outline"></i>
-            <span slot="title">题库列表</span>
-          </el-menu-item>
-          <el-menu-item index="/index/enterprise" v-if="['管理员', '老师'].includes(userInfo.role)">
-            <i class="el-icon-office-building"></i>
-            <span slot="title">企业列表</span>
-          </el-menu-item>
-          <el-menu-item index="/index/subject" v-if="['管理员', '老师'].includes(userInfo.role)">
-            <i class="el-icon-notebook-2"></i>
-            <span slot="title">学科列表</span>
-          </el-menu-item>
+          <!-- 如果必须要增加标签才可以写的代码, 但是这个标签你不希望渲染到页面上 -->
+          <!-- Vue提供了一个 作为占位的标签`template` -->
+          <!-- template 因为不会被渲染,只是占位, 所以里面不能写key -->
+          <template v-for="(item, index) in children">
+            <el-menu-item
+              :index="'/index/' + item.path"
+              :key="index"
+              v-if="item.meta.power.includes(userInfo.role)"
+            >
+              <i class="item.meta.icon"></i>
+              <span slot="title">{{item.meta.name}}</span>
+            </el-menu-item>
+          </template>
         </el-menu>
       </el-aside>
       <el-main class="my-main">
@@ -63,14 +56,19 @@ import { removeToken } from "../../utils/token.js";
 // 导入 接口 方法  退出登录
 import { userLogout } from "../../api/userInfo.js";
 
+// 导入嵌套路由
+import children from "../../router/children.js";
+
 export default {
   name: "index",
   data() {
     return {
       // 是否折叠
-      isCollapse: false
+      isCollapse: false,
       // // 用户信息
       // userInfo: "",
+      // 嵌套路由的信息
+      children
     };
   },
   methods: {

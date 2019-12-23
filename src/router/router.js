@@ -13,18 +13,6 @@ VueRouter.prototype.push = function push(location) {
 }
 // ----------------------------------------
 
-// 导入嵌套路由的组件
-// 数据(图表)组件
-import chart from "../views/index/chart/chart.vue"
-// 用户组件
-import user from "../views/index/user/user.vue"
-// 题库组件
-import question from "../views/index/question/question.vue"
-// 企业组件
-import enterprise from "../views/index/enterprise/enterprise.vue"
-// 学科组件
-import subject from "../views/index/subject/subject.vue"
-
 // 导包 导入VueRouter
 import VueRouter from 'vue-router'
 
@@ -39,6 +27,9 @@ import { getUserInfo } from "../api/userInfo.js"
 
 // 导入仓库
 import store from "../store/store.js"
+
+// 导入嵌套路由
+import children from "./children.js"
 
 // Use一下 注册
 Vue.use(VueRouter)
@@ -61,43 +52,7 @@ const routes = [
             power: ['管理员', '老师', '学生']
         },
         // 嵌套路由
-        children: [
-            {
-                path: 'chart',
-                component: chart,
-                meta: {
-                    power: ['管理员', '老师']
-                }
-            },
-            {
-                path: 'user',
-                component: user,
-                meta: {
-                    power: ['管理员']
-                }
-            },
-            {
-                path: 'question',
-                component: question,
-                meta: {
-                    power: ['管理员', '老师', '学生']
-                }
-            },
-            {
-                path: 'enterprise',
-                component: enterprise,
-                meta: {
-                    power: ['管理员', '老师']
-                }
-            },
-            {
-                path: 'subject',
-                component: subject,
-                meta: {
-                    power: ['管理员', '老师']
-                }
-            },
-        ]
+        children
     },
 ]
 // 创建
@@ -146,10 +101,10 @@ router.beforeEach((to, from, next) => {
                         // window.console.log(to);
                         // window.console.log(res.data.data);
                         // meta访问的白名单匹配
-                        if(to.meta.power.includes(res.data.data.role)){
+                        if (to.meta.power.includes(res.data.data.role)) {
                             // 存在
                             next()
-                        }else{
+                        } else {
                             Message.warning('你没有访问这里的权限哦!请联系管理员')
                         }
                     }
