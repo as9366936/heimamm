@@ -13,6 +13,7 @@
       </el-form-item>
       <el-form-item label="角色" prop="role_id" :label-width="formLabelWidth">
         <el-select v-model="editForm.role_id" placeholder="请选择角色">
+          <el-option label="超级管理员" :value="1" v-remove="['管理员', '老师', '学生']"></el-option>
           <el-option label="管理员" :value="2"></el-option>
           <el-option label="老师" :value="3"></el-option>
           <el-option label="学生" :value="4"></el-option>

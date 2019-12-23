@@ -49,7 +49,7 @@ const routes = [
         // // 路由重定向
         // redirect: "/index/chart",
         meta: {
-            power: ['管理员', '老师', '学生']
+            power: ['超级管理员', '管理员', '老师', '学生']
         },
         // 嵌套路由
         children
