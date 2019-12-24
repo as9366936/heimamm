@@ -66,7 +66,7 @@
       <div class="title-toolbar"></div>
       <div class="title-content"></div>
       <!-- 选项区域--单选 -->
-      <el-form-item label="单选">
+      <el-form-item label="单选" prop="single_select_answer">
         <el-radio-group v-model="addForm.single_select_answer" class="radio_choose">
           <!-- 选项A -->
           <div class="radio-box">
@@ -154,6 +154,12 @@
         </el-upload>
         <video class="video" :src="VideoUrl" v-if="VideoUrl" controls></video>
       </el-form-item>
+      <!-- 分割线 -->
+      <el-divider></el-divider>
+      <!-- 答案解析 -->
+      <el-form-item label="答案解析" prop="answer_analyze"></el-form-item>
+      <div class="answer-toolbar"></div>
+      <div class="answer-content"></div>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$parent.addFormVisible = false">取 消</el-button>
@@ -220,22 +226,49 @@ export default {
       formLabelWidth: "",
       // 添加表单的验证规则
       addFormRules: {
+        // 学科 subject
         subject: [{ required: true, message: "请选择学科", trigger: "change" }],
+        // 阶段 step
         step: [{ required: true, message: "请选择阶段", trigger: "change" }],
+        // 企业 enterprise
         enterprise: [
           { required: true, message: "请选择企业", trigger: "change" }
         ],
+        // 城市 city
         city: [{ required: true, message: "请选择城市", trigger: "change" }],
+        // 题型 type
         type: [{ required: true, message: "请选择题型", trigger: "change" }],
+        // 难度 difficulty
         difficulty: [
           { required: true, message: "请选择难度", trigger: "change" }
         ],
+        // 标题 title
         title: [
           { required: true, message: "请填写试题的标题", trigger: "change" }
-        ]
+        ],
+        // 单选题答案 single_select_answer
+        single_select_answer: [
+          { required: true, message: "单选题答案不能为空", trigger: "change" }
+        ],
+        // 多选题答案 multiple_select_answer
+        multiple_select_answer: [
+          { required: true, message: "多选题答案不能为空", trigger: "change" }
+        ],
+        // 简答题答案 short_answer
+        short_answer: [
+          { required: true, message: "简答题答案不能为空", trigger: "change" }
+        ],
+        // 答案解析 answer_analyze
+        answer_analyze: [
+          { required: true, message: "答案解析不能为空", trigger: "change" }
+        ],
+        // 备注 remark
+        remark: [{ required: true, message: "备注不能为空", trigger: "change" }]
       },
       // 副文本编辑器, 标题部分
       titleEditor: undefined,
+      // 副文本编辑器, 解析部分
+      answerEditor: undefined,
 
       // 本地预览地址
       imageAUrl: "",
@@ -283,18 +316,36 @@ export default {
       // var E = window.wangEditor;
       // var editor2 = new E("#div3");
       // editor2.create();
+
+      // 试题标题部分
       if (this.titleEditor === undefined) {
         this.titleEditor = new wangeditor(".title-toolbar", ".title-content");
         // 注册change事件  这里注意this的指向,最好使用箭头函数
         this.titleEditor.customConfig.onchange = html => {
           // html 即变化之后的内容
-          window.console.log(html);
+          // window.console.log(html);
           // 设置给标题
           this.addForm.title = html;
         };
         this.titleEditor.create();
       }
+      // 答案解析部分
+      if (this.answerEditor === undefined) {
+        this.answerEditor = new wangeditor(
+          ".answer-toolbar",
+          ".answer-content"
+        );
+        // 注册change事件  这里注意this的指向,最好使用箭头函数
+        this.answerEditor.customConfig.onchange = html => {
+          // html 即变化之后的内容
+          // window.console.log(html);
+          // 设置给答案解析
+          this.addForm.answer_analyze = html;
+        };
+        this.answerEditor.create();
+      }
     },
+
     // 文件上传成功的钩子
     handleAvatarSuccess(res, file) {
       // 保存头像地址
@@ -369,12 +420,14 @@ export default {
       width: 60%;
       margin: 0 auto;
 
-      .title-toolbar {
+      .title-toolbar,
+      .answer-toolbar {
         border: 1px solid #c7c7c7;
         border-bottom: none;
       }
 
-      .title-content {
+      .title-content,
+      .answer-content {
         border: 1px solid #c7c7c7;
         height: 100px;
       }
