@@ -81,7 +81,7 @@
         <el-table-column prop="title" label="题目"></el-table-column>
         <el-table-column prop="name" label="学科.阶段"></el-table-column>
         <el-table-column prop="type" label="题型"></el-table-column>
-        <el-table-column prop="username" label="企业"></el-table-column>
+        <el-table-column prop="enterprise" label="企业"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">

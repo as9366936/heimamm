@@ -57,7 +57,7 @@
         <el-radio-group v-model="addForm.difficulty">
           <el-radio :label="1">简单</el-radio>
           <el-radio :label="2">一般</el-radio>
-          <el-radio :label="3">苦难</el-radio>
+          <el-radio :label="3">困难</el-radio>
         </el-radio-group>
       </el-form-item>
       <!-- 分割线 -->
@@ -299,12 +299,12 @@ export default {
               this.$message.success("新增成功!");
               // 关闭弹框
               this.$parent.addFormVisible = false;
-              // 重新渲染学科列表
+              // 重新渲染题目列表
               this.$parent.getData();
               // 清空已输入的数据
-              this.addForm = {};
+              // this.addForm = {};
             } else if (res.code === 201) {
-              this.$message.warning("学科编号已存在,请重新输入!");
+              this.$message.warning(res.message);
             }
           });
         } else {
