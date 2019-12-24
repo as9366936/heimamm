@@ -160,6 +160,12 @@
       <el-form-item label="答案解析" prop="answer_analyze"></el-form-item>
       <div class="answer-toolbar"></div>
       <div class="answer-content"></div>
+      <!-- 分割线 -->
+      <el-divider class="bottom_divider"></el-divider>
+      <!-- 试题备注 -->
+      <el-form-item label="试题备注" prop="remark">
+        <el-input type="textarea" v-model="addForm.remark" :rows="2"></el-input>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$parent.addFormVisible = false">取 消</el-button>
@@ -489,6 +495,10 @@ export default {
       // 视频窗大小
       .video {
         width: 660px;
+      }
+
+      .bottom_divider {
+        margin-top: 59px;
       }
     }
   }
