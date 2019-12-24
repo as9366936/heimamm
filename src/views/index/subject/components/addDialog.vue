@@ -69,7 +69,7 @@ export default {
               this.$parent.getData();
               // 清空已输入的数据
               this.addForm = {};
-            }else if(res.code === 201){
+            } else if (res.code === 201) {
               this.$message.warning("学科编号已存在,请重新输入!");
             }
           });

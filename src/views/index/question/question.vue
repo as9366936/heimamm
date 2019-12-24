@@ -6,12 +6,19 @@
       <el-form :inline="true" :model="questionForm" class="demo-form-inline">
         <el-form-item label="学科">
           <el-select v-model="questionForm.status" class="longInput" placeholder="请选择学科">
-            <el-option v-for="(item, index) in subjectList" :key="index" :label="item.name" :value="item.id"></el-option>
+            <el-option
+              v-for="(item, index) in subjectList"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="阶段">
-          <el-select v-model="questionForm.status" class="longInput" placeholder="请选择阶段">
-            <el-option label="禁用" value="0"></el-option>
+          <el-select v-model="questionForm.step" class="longInput" placeholder="请选择阶段">
+            <el-option label="初级" value="1"></el-option>
+            <el-option label="中级" value="2"></el-option>
+            <el-option label="高级" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="企业">
@@ -25,14 +32,18 @@
           </el-select>
         </el-form-item>
         <el-form-item label="题型">
-          <el-select v-model="questionForm.status" class="longInput" placeholder="请选择题型">
-            <el-option label="禁用" value="0"></el-option>
+          <el-select v-model="questionForm.type" class="longInput" placeholder="请选择题型">
+            <el-option label="单选" value="1"></el-option>
+            <el-option label="多选" value="2"></el-option>
+            <el-option label="简答" value="3"></el-option>
           </el-select>
         </el-form-item>
         <br />
         <el-form-item label="难度">
-          <el-select v-model="questionForm.status" class="longInput" placeholder="请选择难度">
-            <el-option label="禁用" value="0"></el-option>
+          <el-select v-model="questionForm.difficulty" class="longInput" placeholder="请选择难度">
+            <el-option label="简单" value="1"></el-option>
+            <el-option label="一般" value="2"></el-option>
+            <el-option label="困难" value="3"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="作者">
@@ -69,7 +80,7 @@
         <el-table-column type="index" label="序号"></el-table-column>
         <el-table-column prop="title" label="题目"></el-table-column>
         <el-table-column prop="name" label="学科.阶段"></el-table-column>
-        <el-table-column prop="short_name" label="题型"></el-table-column>
+        <el-table-column prop="type" label="题型"></el-table-column>
         <el-table-column prop="username" label="企业"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
         <el-table-column prop="status" label="状态">
@@ -131,34 +142,23 @@ export default {
   data() {
     return {
       // 头部表单
-      questionForm: {
-        // 题库编号
-        rid: "",
-        // 题库名称
-        name: "",
-        // 创建者
-        username: "",
-        // 状态
-        status: ""
-      },
+      questionForm: {},
       // 内容表单
       tableData: [],
-
-      // 企业列表数据
+      // 定义企业数据
       enterpriseList: [],
-      // 学科列表数据
+      // 定义学科数据
       subjectList: [],
-
       // 是否显示新增对话框
       addFormVisible: false,
       // 是否显示编辑对话框
       editFormVisible: false,
-      // 页数据
+      // 分页相关的数据
       // 页码
       page: 1,
-      // 每一页多少条
+      // 页容量
       limit: 4,
-      // 页容量选项 数组
+      // 容量数组
       pageSizes: [2, 4, 6, 8],
       // 总条数
       total: 0
@@ -268,7 +268,7 @@ export default {
     subjectList().then(res => {
       // window.console.log(res);
       this.subjectList = res.data.items;
-    })
+    });
   }
 };
 </script>
