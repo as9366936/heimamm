@@ -2,6 +2,7 @@
   <!-- 新增对话框 -->
   <el-dialog
     fullscreen
+    @opened="opened"
     class="add-dialog"
     center
     title="新增题库"
@@ -36,6 +37,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="城市" prop="city" :label-width="formLabelWidth">
+        <!-- 将value值 设置为 label的选项 -->
         <el-cascader
           size="large"
           :props="{ expandTrigger: 'hover', value: 'label'}"
@@ -58,6 +60,12 @@
           <el-radio :label="3">苦难</el-radio>
         </el-radio-group>
       </el-form-item>
+      <!-- 分割线 -->
+      <el-divider></el-divider>
+      <el-form-item label="试题标题" prop="title"></el-form-item>
+      <div class="title-toolbar"></div>
+      <div class="title-content"></div>
+      <!-- 选项区域--单选 -->
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$parent.addFormVisible = false">取 消</el-button>
@@ -71,6 +79,8 @@
 import { questionAdd } from "../../../../api/question.js";
 // 导入 省市区数据
 import { regionData } from "element-china-area-data";
+// 导入富文本编辑器
+import wangeditor from "wangeditor";
 export default {
   data() {
     return {
@@ -91,21 +101,24 @@ export default {
         // 题型
         type: 1,
         // 难度
-        difficulty: 1
+        difficulty: ""
       },
       // 宽度
       formLabelWidth: "80px",
       // 添加表单的验证规则
       addFormRules: {
-        subject: [{ required: true, message: "请选择学科", trigger: "blur" }],
-        step: [{ required: true, message: "请选择阶段", trigger: "blur" }],
+        subject: [{ required: true, message: "请选择学科", trigger: "change" }],
+        step: [{ required: true, message: "请选择阶段", trigger: "change" }],
         enterprise: [
-          { required: true, message: "请选择企业", trigger: "blur" }
+          { required: true, message: "请选择企业", trigger: "change" }
         ],
-        city: [{ required: true, message: "请选择城市", trigger: "blur" }],
-        type: [{ required: true, message: "请选择题型", trigger: "blur" }],
-        difficulty: [{ required: true, message: "请选择难度", trigger: "blur" }]
-      }
+        city: [{ required: true, message: "请选择城市", trigger: "change" }],
+        type: [{ required: true, message: "请选择题型", trigger: "change" }],
+        difficulty: [{ required: true, message: "请选择难度", trigger: "change" }],
+        title: [{ required: true, message: "请填写试题的标题", trigger: "change" }],
+      },
+      // 副文本编辑器, 标题部分
+      titleEditor: undefined
     };
   },
   methods: {
@@ -137,8 +150,20 @@ export default {
     },
     handleChange(value) {
       window.console.log(value);
+    },
+    opened() {
+      // 使用 wangeditor
+      // var E = window.wangEditor;
+      // var editor2 = new E("#div3");
+      // editor2.create();
+      if (this.titleEditor === undefined) {
+        this.titleEditor = new wangeditor(".title-toolbar", ".title-content");
+        this.titleEditor.create();
+      }
     }
-  }
+  },
+  // mounted 是第一次加载完毕, 但是对话框还没有加载出来
+  mounted() {}
 };
 </script>
 
@@ -150,6 +175,16 @@ export default {
     .el-form {
       width: 60%;
       margin: 0 auto;
+
+      .title-toolbar {
+        border: 1px solid #c7c7c7;
+        border-bottom: none;
+      }
+
+      .title-content {
+        border: 1px solid #c7c7c7;
+        height: 100px;
+      }
     }
 
     .el-dialog__header {
