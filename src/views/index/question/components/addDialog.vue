@@ -138,6 +138,22 @@
           </div>
         </el-radio-group>
       </el-form-item>
+      <!-- 分割线 -->
+      <el-divider></el-divider>
+      <!-- 视频上传区域 -->
+      <el-form-item label="解析视频">
+        <!-- 上传组件 -->
+        <el-upload
+          :action="uploadUrl"
+          :show-file-list="false"
+          :on-success="handleVideoSuccess"
+          :before-upload="beforeVideoUpload"
+        >
+          <el-button size="small" type="primary">点击上传</el-button>
+          <div slot="tip" class="el-upload__tip">只能上传视频格式文件</div>
+        </el-upload>
+        <video class="video" :src="VideoUrl" v-if="VideoUrl" controls></video>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="$parent.addFormVisible = false">取 消</el-button>
@@ -226,9 +242,10 @@ export default {
       imageBUrl: "",
       imageCUrl: "",
       imageDUrl: "",
-
       // 文件的上传地址
-      uploadUrl: process.env.VUE_APP_BASEURL + "/question/upload"
+      uploadUrl: process.env.VUE_APP_BASEURL + "/question/upload",
+      // 视频临时地址
+      VideoUrl: ""
     };
   },
   methods: {
@@ -315,8 +332,29 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    // 视频上传成功的钩子
+    handleVideoSuccess(res, file) {
+      // window.console.log(res);
+      // 存入要上传的表单中
+      this.addForm.video = res.data.url;
+      // 生成本地的临时地址
+      this.VideoUrl = URL.createObjectURL(file.raw);
+    },
+    // 视频上传判断 的逻辑
+    beforeVideoUpload(file) {
+      const isJPG = file.type === "video/mp4";
+      const isLt2M = file.size / 1024 / 1024 < 50; // 不能超过50M
+      if (!isJPG) {
+        this.$message.error("上传视频只能是 mp4 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传的视频大小不能超过 50MB!");
+      }
+      return isJPG && isLt2M;
     }
   },
+
   // mounted 是第一次加载完毕, 但是对话框还没有加载出来
   mounted() {}
 };
@@ -393,6 +431,11 @@ export default {
           height: 178px;
           display: block;
         }
+      }
+
+      // 视频窗大小
+      .video {
+        width: 660px;
       }
     }
   }
