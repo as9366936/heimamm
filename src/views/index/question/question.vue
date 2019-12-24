@@ -6,7 +6,7 @@
       <el-form :inline="true" :model="questionForm" class="demo-form-inline">
         <el-form-item label="学科">
           <el-select v-model="questionForm.status" class="longInput" placeholder="请选择学科">
-            <el-option label="禁用" value="0"></el-option>
+            <el-option v-for="(item, index) in subjectList" :key="index" :label="item.name" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="阶段">
@@ -16,7 +16,12 @@
         </el-form-item>
         <el-form-item label="企业">
           <el-select v-model="questionForm.status" class="longInput" placeholder="请选择企业">
-            <el-option label="禁用" value="0"></el-option>
+            <el-option
+              v-for="(item, index) in enterpriseList"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="题型">
@@ -114,6 +119,8 @@ import {
   questionRemove,
   questionStatus
 } from "../../../api/question.js";
+import { enterpriseList } from "../../../api/enterprise.js";
+import { subjectList } from "../../../api/subject.js";
 export default {
   name: "question",
   // 注册组件
@@ -135,26 +142,12 @@ export default {
         status: ""
       },
       // 内容表单
-      tableData: [
-        {
-          index: "1",
-          rid: "QD001",
-          name: "前端与移动开发",
-          short_name: "前端",
-          username: "刘洋洋",
-          create_time: "2019-11-21",
-          status: "启用"
-        },
-        {
-          index: "1",
-          rid: "QD001",
-          name: "java",
-          short_name: "后端",
-          username: "北冰洋",
-          create_time: "2019-11-21",
-          status: "禁用"
-        }
-      ],
+      tableData: [],
+
+      // 企业列表数据
+      enterpriseList: [],
+      // 学科列表数据
+      subjectList: [],
 
       // 是否显示新增对话框
       addFormVisible: false,
@@ -264,7 +257,18 @@ export default {
     }
   },
   created() {
+    // 调用 数据获取接口
     this.getData();
+    // 获取企业数据
+    enterpriseList().then(res => {
+      // window.console.log(res);
+      this.enterpriseList = res.data.items;
+    });
+    // 获取学科数据
+    subjectList().then(res => {
+      // window.console.log(res);
+      this.subjectList = res.data.items;
+    })
   }
 };
 </script>

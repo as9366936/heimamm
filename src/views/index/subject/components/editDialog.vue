@@ -1,6 +1,6 @@
 <template>
   <!-- 编辑对话框 -->
-  <el-dialog class="edit-dialog" center title="编辑学科" :visible.sync="$parent.editFormVisible">
+  <el-dialog class="edit-dialog" center title="修改学科" :visible.sync="$parent.editFormVisible">
     <el-form ref="editForm" :model="editForm" :rules="editFormRules">
       <el-form-item label="学科编号" prop="rid" :label-width="formLabelWidth">
         <el-input v-model="editForm.rid" autocomplete="off"></el-input>
