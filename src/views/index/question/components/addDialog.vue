@@ -66,8 +66,8 @@
       <div class="title-toolbar"></div>
       <div class="title-content"></div>
       <!-- 选项区域--单选 -->
-      <el-form-item label="单选" prop="single_select_answer">
-        <el-radio-group v-model="addForm.single_select_answer" class="radio_choose">
+      <el-form-item v-if="addForm.type === 1" label="单选" prop="single_select_answer">
+        <el-radio-group v-model="addForm.single_select_answer" class="choose">
           <!-- 选项A -->
           <div class="radio-box">
             <el-radio label="A">A</el-radio>
@@ -138,6 +138,79 @@
           </div>
         </el-radio-group>
       </el-form-item>
+      <!-- 选项区域--多选 -->
+      <el-form-item v-else-if="addForm.type === 2" label="多选" prop="multiple_select_answer">
+        <el-checkbox-group v-model="addForm.multiple_select_answer" class="choose">
+          <!-- 选项A -->
+          <div class="radio-box">
+            <el-checkbox label="A">A</el-checkbox>
+            <!-- 输入框 -->
+            <el-input v-model="addForm.select_options[0].text"></el-input>
+            <!-- 上传组件 -->
+            <el-upload
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="imageAUrl" :src="imageAUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+          <!-- 选项B -->
+          <div class="radio-box">
+            <el-checkbox label="B">B</el-checkbox>
+            <!-- 输入框 -->
+            <el-input v-model="addForm.select_options[1].text"></el-input>
+            <!-- 上传组件 -->
+            <el-upload
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :on-success="handleBvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="imageBUrl" :src="imageBUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+          <!-- 选项C -->
+          <div class="radio-box">
+            <el-checkbox label="C">C</el-checkbox>
+            <!-- 输入框 -->
+            <el-input v-model="addForm.select_options[2].text"></el-input>
+            <!-- 上传组件 -->
+            <el-upload
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :on-success="handleCvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="imageCUrl" :src="imageCUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+          <!-- 选项D -->
+          <div class="radio-box">
+            <el-checkbox label="D">D</el-checkbox>
+            <!-- 输入框 -->
+            <el-input v-model="addForm.select_options[3].text"></el-input>
+            <!-- 上传组件 -->
+            <el-upload
+              class="avatar-uploader"
+              :action="uploadUrl"
+              :show-file-list="false"
+              :on-success="handleDvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <img v-if="imageDUrl" :src="imageDUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
+        </el-checkbox-group>
+      </el-form-item>
       <!-- 分割线 -->
       <el-divider></el-divider>
       <!-- 视频上传区域 -->
@@ -198,12 +271,14 @@ export default {
         enterprise: "",
         // 城市
         city: "",
-        // 题型
+        // 题型 默认单选
         type: 1,
         // 难度
         difficulty: "",
         // 标题
         title: "",
+        // 多选的 答案
+        multiple_select_answer: [],
         // 选项的数据
         select_options: [
           {
@@ -226,7 +301,7 @@ export default {
             text: "炸酱面",
             image: "upload/20191129/4067f19ab53a5e8388ad3459e23110f0.jpeg"
           }
-        ]
+        ],
       },
       // 宽度
       formLabelWidth: "",
@@ -446,8 +521,16 @@ export default {
           color: white;
         }
       }
-      .radio_choose {
+      .choose {
         width: 100%;
+      }
+      // 多选框组
+      .el-checkbox-group {
+        margin-top: 40px;
+
+        .avatar-uploader {
+          height: 180px;
+        }
       }
       // 单选框
       .radio-box {
@@ -455,6 +538,10 @@ export default {
         align-items: center;
         margin-left: 81px;
         margin-bottom: 45px;
+        // 多选框样式
+        .el-checkbox {
+          margin-right: 30px;
+        }
 
         // 上传组件的样式
         // 头像居中
