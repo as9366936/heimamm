@@ -62,7 +62,10 @@
       </el-form-item>
       <!-- 分割线 -->
       <el-divider></el-divider>
-      <el-form-item label="试题标题" prop="title"></el-form-item>
+      <el-form-item label="试题标题" prop="title">
+        <!-- 隐藏一个input,做非空判断联动 -->
+        <el-input v-model="addForm.title" style="display: none"></el-input>
+      </el-form-item>
       <div class="title-toolbar"></div>
       <div class="title-content"></div>
       <!-- 选项区域--单选 -->
@@ -234,7 +237,10 @@
       <!-- 分割线 -->
       <el-divider></el-divider>
       <!-- 答案解析 -->
-      <el-form-item label="答案解析" prop="answer_analyze"></el-form-item>
+      <el-form-item label="答案解析" prop="answer_analyze">
+        <!-- 隐藏一个input,做非空判断联动 -->
+        <el-input v-model="addForm.answer_analyze" style="display: none"></el-input>
+      </el-form-item>
       <div class="answer-toolbar"></div>
       <div class="answer-content"></div>
       <!-- 分割线 -->
@@ -271,6 +277,10 @@ export default {
         type: 1,
         // 多选的 答案
         multiple_select_answer: [],
+        // 标题
+        title: "",
+        // 单选的 答案
+        answer_analyze: "",
         // 选项的数据
         select_options: [
           {
@@ -293,7 +303,7 @@ export default {
             text: "炸酱面",
             image: "upload/20191129/4067f19ab53a5e8388ad3459e23110f0.jpeg"
           }
-        ],
+        ]
       },
       // 宽度
       formLabelWidth: "",
@@ -399,6 +409,7 @@ export default {
           // window.console.log(html);
           // 设置给标题
           this.addForm.title = html;
+          window.console.log(this.addForm.title);
         };
         this.titleEditor.create();
       }
