@@ -249,6 +249,13 @@ export default {
             if (res.code === 200) {
               // 提示用户
               this.$message.success("删除成功!");
+              if(this.tableData.length == 1){
+                // 一会儿刷新就没有了
+                // 修改页码
+                this.page--;
+                // 如果 this.page 小于1 那么就变为1
+                this.page = this.page < 1 ? 1 : this.page;
+              }
               // 重新获取数据
               this.getData();
             }
