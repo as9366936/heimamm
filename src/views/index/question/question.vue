@@ -5,7 +5,7 @@
       <!-- 头部表单 -->
       <el-form :inline="true" :model="questionForm" class="demo-form-inline">
         <el-form-item label="学科">
-          <el-select v-model="questionForm.status" class="longInput" placeholder="请选择学科">
+          <el-select v-model="questionForm.subject" class="longInput" placeholder="请选择学科">
             <el-option
               v-for="(item, index) in subjectList"
               :key="index"
@@ -22,7 +22,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="企业">
-          <el-select v-model="questionForm.status" class="longInput" placeholder="请选择企业">
+          <el-select v-model="questionForm.enterprise" class="longInput" placeholder="请选择企业">
             <el-option
               v-for="(item, index) in enterpriseList"
               :key="index"
@@ -47,7 +47,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="作者">
-          <el-input v-model="questionForm.rid" class="longInput"></el-input>
+          <el-input v-model="questionForm.username" class="longInput"></el-input>
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="questionForm.status" class="longInput" placeholder="请选择状态">
@@ -56,11 +56,17 @@
           </el-select>
         </el-form-item>
         <el-form-item label="日期">
-          <el-input v-model="questionForm.rid" class="longInput" placeholder="选择日期"></el-input>
+          <el-date-picker
+            v-model="questionForm.create_date"
+            class="longInput"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
+          <!-- <el-input v-model="questionForm.create_date" class="longInput" placeholder="选择日期"></el-input> -->
         </el-form-item>
         <br />
         <el-form-item label="标题">
-          <el-input v-model="questionForm.rid" class="titleInput"></el-input>
+          <el-input v-model="questionForm.title" class="titleInput"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="getData" class="search">搜索</el-button>
@@ -78,10 +84,26 @@
       <!-- 内容表单 -->
       <el-table border :data="tableData" style="width: 100%">
         <el-table-column type="index" label="序号"></el-table-column>
-        <el-table-column prop="title" label="题目"></el-table-column>
-        <el-table-column prop="name" label="学科.阶段"></el-table-column>
-        <el-table-column prop="type" label="题型"></el-table-column>
-        <el-table-column prop="enterprise" label="企业"></el-table-column>
+        <el-table-column prop="title" label="题目">
+          <template slot-scope="scope">
+            <span v-html="scope.row.title"></span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="subject_step" label="学科.阶段">
+          <template slot-scope="scope">
+            <span>{{scope.row.subject_name}}.{{ {1: "初级", 2: "中级", 3: "高级"}[scope.row.step] }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="type" label="题型">
+          <template slot-scope="scope">
+            <!-- <span v-if="scope.row.type === 1">单选题</span>
+            <span v-else-if="scope.row.type === 2">多选题</span>
+            <span v-else>简答题</span>-->
+            <!-- 改进的写法 -->
+            {{ {1: "单选题", 2: "多选题", 3: "简答题"}[scope.row.type] }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="enterprise_name" label="企业"></el-table-column>
         <el-table-column prop="username" label="创建者"></el-table-column>
         <el-table-column prop="status" label="状态">
           <template slot-scope="scope">
@@ -89,7 +111,7 @@
             <span class="forbidden" v-else>禁用</span>
           </template>
         </el-table-column>
-        <el-table-column prop="username" label="访问量"></el-table-column>
+        <el-table-column prop="reads" label="访问量"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="showEdit(scope.row)">编辑</el-button>
