@@ -211,6 +211,10 @@
           </div>
         </el-checkbox-group>
       </el-form-item>
+      <!-- 选项区域--简答 -->
+      <el-form-item v-else-if="addForm.type === 3" label="简答题" prop="short_answer">
+        <el-input v-model="addForm.short_answer" type="textarea" :rows="6"></el-input>
+      </el-form-item>
       <!-- 分割线 -->
       <el-divider></el-divider>
       <!-- 视频上传区域 -->
@@ -263,20 +267,8 @@ export default {
 
       // 新增对话框表单
       addForm: {
-        // 学科
-        subject: "",
-        // 阶段
-        step: "",
-        // 企业
-        enterprise: "",
-        // 城市
-        city: "",
         // 题型 默认单选
         type: 1,
-        // 难度
-        difficulty: "",
-        // 标题
-        title: "",
         // 多选的 答案
         multiple_select_answer: [],
         // 选项的数据
