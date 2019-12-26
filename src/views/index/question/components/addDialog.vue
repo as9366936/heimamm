@@ -43,7 +43,6 @@
           :props="{ expandTrigger: 'hover', value: 'label'}"
           :options="options"
           v-model="addForm.city"
-          @change="handleChange"
         ></el-cascader>
       </el-form-item>
       <el-form-item label="题型" prop="type" :label-width="formLabelWidth">
@@ -391,9 +390,6 @@ export default {
         }
       });
     },
-    handleChange(value) {
-      window.console.log(value);
-    },
     opened() {
       // 使用 wangeditor
       // var E = window.wangEditor;
@@ -409,7 +405,7 @@ export default {
           // window.console.log(html);
           // 设置给标题
           this.addForm.title = html;
-          window.console.log(this.addForm.title);
+          // window.console.log(this.addForm.title);
         };
         this.titleEditor.create();
       }
@@ -432,26 +428,27 @@ export default {
 
     // 文件上传成功的钩子
     handleAvatarSuccess(res, file) {
+      window.console.log(res);
       // 保存头像地址
-      this.addForm.select_options[0].image = res.data.file_path;
+      this.addForm.select_options[0].image = res.data.url;
       // 生成本地的临时地址
       this.imageAUrl = URL.createObjectURL(file.raw);
     },
     handleBvatarSuccess(res, file) {
       // 保存头像地址
-      this.addForm.select_options[1].image = res.data.file_path;
+      this.addForm.select_options[1].image = res.data.url;
       // 生成本地的临时地址
       this.imageBUrl = URL.createObjectURL(file.raw);
     },
     handleCvatarSuccess(res, file) {
       // 保存头像地址
-      this.addForm.select_options[2].image = res.data.file_path;
+      this.addForm.select_options[2].image = res.data.url;
       // 生成本地的临时地址
       this.imageCUrl = URL.createObjectURL(file.raw);
     },
     handleDvatarSuccess(res, file) {
       // 保存头像地址
-      this.addForm.select_options[3].image = res.data.file_path;
+      this.addForm.select_options[3].image = res.data.url;
       // 生成本地的临时地址
       this.imageDUrl = URL.createObjectURL(file.raw);
     },
